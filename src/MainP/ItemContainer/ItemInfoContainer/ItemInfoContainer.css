@@ -1,0 +1,14 @@
+.itemInfo {
+  width: 95%;
+  height: 30%;
+  border: 2px solid red;
+  margin: 0 auto;
+}
+
+ul {
+  padding: 0;
+}
+
+.item {
+  list-style: none;
+}

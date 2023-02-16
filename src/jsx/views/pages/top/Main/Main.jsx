@@ -13,8 +13,8 @@ const Main = () => {
       .then((data) => {
         setItems(data)
       });
-      console.log(items);
     });
+    console.log(items);
   }, []);
 
   return (

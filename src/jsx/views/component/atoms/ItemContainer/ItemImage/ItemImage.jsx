@@ -5,7 +5,7 @@ const ItemImage = (props) => {
 
   return (
     <ItemsImage id='itemImage' className='itemImage'>
-      <Img src={itemUrl} alt="" />
+      <Img src={itemUrl} />
     </ItemsImage>
   );
 };

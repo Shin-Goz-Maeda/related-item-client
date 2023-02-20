@@ -12,13 +12,15 @@ import SignUp from '../views/pages/signup/SignUp';
 import WithdrawalComplete from '../views/pages/withdrawal/WithdrawalComplete';
 import WithdrawalConfirmation from '../views/pages/withdrawal/WithdrawalConfirmation';
 
-const RouterConfig =() => {
+const RouterConfig =(props) => {
+  const { handleItemSet, item, items, instagramPosts } = props;
+
   return (
     <>
      <BrowserRouter>
       <Routes>
-        <Route index element={<Main />} />
-        <Route path="item" element={<Item />} />
+        <Route index element={<Main handleItemSet={handleItemSet} items={items} />} />
+        <Route path="item" element={<Item item={item} instagramPosts={instagramPosts} />} />
         <Route path="login" element={<Login />} />
         <Route path="pwreconfiguration" element={<PwReconfiguration />} />
         <Route path="pwreset" element={<PwReset />} />

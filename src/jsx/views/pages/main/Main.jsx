@@ -1,51 +1,41 @@
 import Header from '../header/Header';
 import Menu from '../../component/atoms/Menu/Menu';
 import ItemContainer from '../../component/atoms/ItemContainer/ItemContainer';
-import { localhost } from '../../component/atoms/constant/constants';
+import { Link } from "react-router-dom";
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-const Main = () => {
-  const [ items, setItems ] = useState();
+const Main = (props) => {
+  const { handleItemSet, items } = props;
   const [ isMenu, setIsMenu ] = useState(false);
 
   const handleMenu = () => {
     setIsMenu(!isMenu);
-    console.log(isMenu);
   };
 
-
-  const MenuDisplay = () => {
+  const menuDisplay = () => {
     if (isMenu) {
       return <Menu />;
     }
   };
 
-  useEffect(() => {
-    fetch(localhost + "/getImage")
-      .then((response) => {
-        response.json()
-      .then((data) => {
-        setItems(data)
-      });
-    });
-  }, []);
-
   return (
     <>
       <Header onClick={handleMenu} />
       <Container id='container'>
-        { MenuDisplay() }
+        { menuDisplay() }
         <ItemSpace>
-        {typeof items !== "undefined" && items.map((value) => {
+        {typeof items !== "undefined" && items.map((value, index) => {
           return (
-            <ItemContainer
-              key={value.id}
-              itemName={value.itemName}
-              brand={value.brand}
-              itemCategory={value.itemCategory}
-              itemUrl={value.itemUrl}
-            />
+            <Link to="item" onClick={() => handleItemSet(value.id)}  key={index}>
+              <ItemContainer
+                itemId={value.id}
+                itemName={value.itemName}
+                brand={value.brand}
+                itemCategory={value.itemCategory}
+                itemUrl={value.itemPicUrl}
+              />
+            </Link>
           );
         })};
         </ItemSpace>
@@ -59,7 +49,6 @@ const Container = styled.div`
   height: 1000px;
   display: flex;
   justify-content: space-around;
-  z-index: 1;
 `;
 
 const ItemSpace = styled.div`
@@ -68,7 +57,6 @@ const ItemSpace = styled.div`
   overflow-y: scroll;
   flex-wrap: wrap;
   justify-content: space-around;
-  z-index: 1;
 `;
 
 export default Main;

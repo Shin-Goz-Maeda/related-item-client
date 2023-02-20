@@ -1,1 +1,3 @@
-export const localhost = "http://localhost:3001";
+import { createContext } from "react";
+
+export const Context = createContext();

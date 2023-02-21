@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { localhost } from '../views/component/atoms/constant/Url';
 import RouterConfig from "./Route";
-import styled from "styled-components";
 
 const App = () => {
   const [ itemSelect, setItemSelect ] = useState();

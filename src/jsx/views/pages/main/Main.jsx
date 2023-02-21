@@ -1,7 +1,13 @@
 import Header from '../header/Header';
+<<<<<<< Updated upstream
 import Menu from '../../component/atoms/Menu/Menu';
 import ItemContainer from '../../component/atoms/ItemContainer/ItemContainer';
 import { localhost } from '../../component/atoms/constant/constants';
+=======
+import Menu from '../../components/blocks/menu/Menu';
+import ItemContainer from '../../components/blocks/mainItemContainer/ItemContainer';
+import { Link } from "react-router-dom";
+>>>>>>> Stashed changes
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 

@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import Main from './jsx/views/pages/top/Main/Main';
+import RouterConfig from './jsx/routes/Route';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Main />
+    <RouterConfig />
   </React.StrictMode>
 );
-

@@ -1,5 +1,5 @@
-import ItemImage from './ItemImage/ItemImage';
-import ItemInfoContainer from './ItemInfoContainer/ItemInfoContainer';
+import ItemImage from './itemImage/ItemImage';
+import ItemInfoContainer from './itemInfoContainer/ItemInfoContainer';
 import styled from 'styled-components';
 
 const ItemContainer = (props) => {

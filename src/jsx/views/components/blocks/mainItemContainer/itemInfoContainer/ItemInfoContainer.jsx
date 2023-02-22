@@ -6,9 +6,9 @@ const ItemInfoContainer = (props) => {
   return (
     <ItemInfoContent id='itemInfo' className='itemInfo'>
       <ItemInfoLists>
-        <IntemInfoList id='brand' className='item'>{brand}</IntemInfoList>
-        <IntemInfoList id='itemName' className='item'>{itemName}</IntemInfoList>
-        <IntemInfoList id='itemCategory' className='item'>{itemCategory}</IntemInfoList>
+        <ItemInfoList id='brand' className='item'>{brand}</ItemInfoList>
+        <ItemInfoList id='itemName' className='item'>{itemName}</ItemInfoList>
+        <ItemInfoList id='itemCategory' className='item'>{itemCategory}</ItemInfoList>
       </ItemInfoLists>
     </ItemInfoContent>
   );
@@ -27,7 +27,7 @@ const ItemInfoLists = styled.ul`
   padding: 0;
 `;
 
-const IntemInfoList = styled.li`
+const ItemInfoList = styled.li`
   list-style: none;
 `;
 

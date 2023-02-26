@@ -7,14 +7,14 @@ import { useState } from 'react';
 
 const Main = (props) => {
   const { handleItemSet, items } = props;
-  const [ isMenu, setIsMenu ] = useState(false);
+  const [ isShowMenu, setIsShowMenu ] = useState(false);
 
   const handleMenu = () => {
-    setIsMenu(!isMenu);
+    setIsShowMenu(!isShowMenu);
   };
 
   const menuDisplay = () => {
-    if (isMenu) {
+    if (isShowMenu) {
       return <Menu />;
     }
   };

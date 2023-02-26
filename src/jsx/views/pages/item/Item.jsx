@@ -7,15 +7,16 @@ import styled from "styled-components";
 
 const Item = (props) => {
   const { item, instagramPosts } = props;
-  const [isMenu, setIsMenu] = useState(false);
+  const [isShowMenu, setIsShowMenu] = useState(false);
+  // デバック用
   console.log(instagramPosts);
 
   const handleMenu = () => {
-    setIsMenu(!isMenu);
+    setIsShowMenu(!isShowMenu);
   };
 
   const menuDisplay = () => {
-    if (isMenu) {
+    if (isShowMenu) {
       return <Menu />;
     }
   };
@@ -36,7 +37,7 @@ const Item = (props) => {
               itemInfo={item.itemInfo}
             />
           </SelectItem>
-          <SelectRelateItem>
+          {/* <SelectRelateItem>
           {typeof instagramPosts !== "undefined" && instagramPosts.map((value) => {
             return (
               <InstagramImg
@@ -46,7 +47,7 @@ const Item = (props) => {
               />
             )
           })};
-          </SelectRelateItem>
+          </SelectRelateItem> */}
         </ItemDisplay>
       </Container>
     </>

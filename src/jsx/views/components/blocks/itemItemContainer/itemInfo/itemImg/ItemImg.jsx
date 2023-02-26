@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 const ItemImg = (props) => {
-  const { itemPicUrl } = props;
+  const { itemImgUrl } = props;
 
   return (
     <ItemImgContainer>
-      <ItemDisPlayImg src={itemPicUrl}></ItemDisPlayImg>
+      <ItemDisplayImg src={itemImgUrl}></ItemDisplayImg>
     </ItemImgContainer>
   );
 };
@@ -17,7 +17,7 @@ const ItemImgContainer = styled.div`
   border: 1px solid red;
 `;
 
-const ItemDisPlayImg = styled.img`
+const ItemDisplayImg = styled.img`
   width: 100%;
   height: 100%;
 `;

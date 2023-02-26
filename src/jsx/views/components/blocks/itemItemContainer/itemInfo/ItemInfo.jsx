@@ -2,11 +2,11 @@ import ItemImg from './itemImg/ItemImg';
 import ItemDetailInformation from './itemDetailInfomation/ItemDetailInfomation';
 
 const ItemInfo = (props) => {
-  const {  itemPicUrl, itemName, brand, itemInfo, itemCategory } = props;
+  const { itemImgUrl, itemName, brand, itemInfo, itemCategory } = props;
 
   return (
     <>
-      <ItemImg itemPicUrl={itemPicUrl} />
+      <ItemImg itemImgUrl={itemImgUrl} />
       <ItemDetailInformation
         itemName={itemName}
         brand={brand}

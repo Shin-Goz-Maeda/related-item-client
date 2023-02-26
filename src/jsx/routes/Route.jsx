@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { localhost } from '../common/constant/constants';
+import { HOST_DOMAIN } from '../common/constant/constants';
 
 // 各ページをインポート
 import Main from '../views/pages/main/Main';
@@ -19,7 +19,7 @@ const RouterConfig =() => {
   const [ instagramPosts, setInstagramPosts ] = useState([]);
 
   useEffect(() => {
-    fetch(localhost + "/getImage")
+    fetch(HOST_DOMAIN + "/getImage")
       .then((response) => {
         response.json()
       .then((data) => {
@@ -29,7 +29,7 @@ const RouterConfig =() => {
   }, []);
 
   useEffect(() => {
-    fetch(localhost + "/getInstagramImage")
+    fetch(HOST_DOMAIN + "/getInstagramImage")
       .then((response) => {
         response.json()
       .then((data) => {

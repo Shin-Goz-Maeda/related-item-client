@@ -20,6 +20,7 @@ const Main = () => {
     }
   };
 
+  // DBからアイテム情報をすべて取得
   useEffect(() => {
     fetch(HOST_DOMAIN + "/getImage")
       .then((response) => {

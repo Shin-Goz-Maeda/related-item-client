@@ -1,6 +1,4 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { HOST_DOMAIN } from '../common/constant/constants';
 
 // 各ページをインポート
 import Main from '../views/pages/main/Main';
@@ -15,49 +13,13 @@ import WithdrawalComplete from '../views/pages/withdrawal/WithdrawalComplete';
 import WithdrawalConfirmation from '../views/pages/withdrawal/WithdrawalConfirmation';
 
 const RouterConfig =() => {
-  const [ items, setItems ] = useState();
-  const [ instagramPosts, setInstagramPosts ] = useState([]);
-
-  useEffect(() => {
-    fetch(HOST_DOMAIN + "/getImage")
-      .then((response) => {
-        response.json()
-      .then((data) => {
-        setItems(data)
-      });
-    });
-  }, []);
-
-  useEffect(() => {
-    fetch(HOST_DOMAIN + "/getInstagramImage")
-      .then((response) => {
-        response.json()
-      .then((data) => {
-        setInstagramPosts(data)
-      });
-    });
-  }, [items]);
-
-  useEffect(() => {
-    if (instagramPosts.length > 0) {
-      const script = document.createElement("script");
-      script.type = "text/javascript";
-
-      let attr = document.createAttribute("src");
-      attr.value = "//www.instagram.com/embed.js";
-      script.setAttributeNode(attr);
-
-      const head = document.getElementsByTagName("head")[0];
-      head.appendChild(script);
-    }
-  }, [instagramPosts]);
 
   return (
     <>
      <BrowserRouter>
       <Routes>
-        <Route index element={<Main items={items} />} />
-        <Route path="item" element={<Item instagramPosts={instagramPosts} />} />
+        <Route index element={<Main />} />
+        <Route path="item/:id" element={<Item />} />
         <Route path="login" element={<Login />} />
         <Route path="pwreconfiguration" element={<PwReconfiguration />} />
         <Route path="pwreset" element={<PwReset />} />

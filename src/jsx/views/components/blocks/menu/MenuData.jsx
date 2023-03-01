@@ -10,12 +10,12 @@ const MenuData = [
   },
   {
     title: "パスワードリセット",
-    icon: <RestartAltIcon/>,
+    icon: <RestartAltIcon />,
     link: "pwreset",
   },
   {
     title: "退会",
-    icon: <DirectionsWalkIcon/>,
+    icon: <DirectionsWalkIcon />,
     link: "withdrawalconfirmation",
   },
 ];

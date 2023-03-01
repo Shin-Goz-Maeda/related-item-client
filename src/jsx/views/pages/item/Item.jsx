@@ -8,8 +8,15 @@ import ItemInfo from '../../components/blocks/itemItemContainer/itemInfo/ItemInf
 import styled from "styled-components";
 
 const Item = () => {
-  const [ items, setItems ] = useState();
-  const [isShowMenu, setIsShowMenu] = useState(false);
+  const [ item, setItem ] = useState();
+  const [ isShowMenu, setIsShowMenu] = useState(false);
+  const [ loaded, setLoaded ] = useState(false);
+
+  // URLからアイテムナンバーを取得
+  const { id } = useParams();
+  const itemId = id - 1;
+  // デバック用
+  console.log(itemId);
 
   // デバック用
   // console.log(instagramPosts);
@@ -24,28 +31,17 @@ const Item = () => {
     }
   };
 
-  // サーバーからアイテム情報一覧を取得
   useEffect(() => {
-    fetch(HOST_DOMAIN + "/getImage")
+    setLoaded(false);
+    fetch(HOST_DOMAIN + "/item/" + id)
       .then((response) => {
         response.json()
       .then((data) => {
-        setItems(data)
+        setItem(data)
+        setLoaded(true);
+        })
       });
-    });
-    // デバック用
-    console.log(items)
   }, []);
-
-  // URLからアイテムナンバーを取得
-  const { id } = useParams();
-  const itemId = id - 1;
-
-  // 取得したアイテム情報からアイテムナンバーと一致するアイテム情報をitemに代入
-  const item = items[itemId]
-
-  // デバック用
-  console.log(itemId);
 
   return (
     <>
@@ -53,15 +49,14 @@ const Item = () => {
       <Container>
         { menuDisplay() }
         <ItemDisplay>
-          <SelectItem>
-            <ItemInfo
-              key={item.id}
+          <SelectItem>{loaded ?
+          <ItemInfo
               itemName={item.itemName}
               brand={item.brand}
               itemCategory={item.itemCategory}
-              itemPicUrl={item.itemPicUrl}
+              itemImgUrl={item.itemImgUrl}
               itemInfo={item.itemInfo}
-            />
+            /> : <ItemInfo load="ロード中" />}
           </SelectItem>
           {/* <SelectRelateItem>
           {typeof instagramPosts !== "undefined" && instagramPosts.map((value) => {

@@ -4,6 +4,7 @@ import Header from "../header/Header";
 import Menu from "../../components/blocks/menu/Menu";
 import { HOST_DOMAIN } from '../../../common/constant/constants';
 import ItemInfo from '../../components/blocks/itemItemContainer/itemInfo/ItemInfo';
+import InstagramImg from '../../components/blocks/itemItemContainer/instagramInfo/instagramImg/InstagramImg';
 import styled from "styled-components";
 
 const Item = () => {
@@ -32,9 +33,20 @@ const Item = () => {
       .then((data) => {
         setItem(data)
         setLoaded(true);
+        console.log(data)
         })
       });
   }, []);
+
+  const showInstagramPost = () => {
+    const a = item.map((value) => <InstagramImg instagramPost={value.instagram_embed_code} />)
+    return a
+  };
+
+  const NothingPost = () => {
+    const b = <InstagramImg loaded={loaded}/>
+    return b;
+  };
 
   return (
     <>
@@ -44,14 +56,18 @@ const Item = () => {
         <ItemDisplay>
           <SelectItem>{loaded ?
             <ItemInfo
-                itemName={item.itemName}
-                brand={item.brand}
-                itemCategory={item.itemCategory}
-                itemImgUrl={item.itemImgUrl}
-                itemInfo={item.itemInfo}
+                itemName={item[0].item_name}
+                brand={item[0].brand}
+                itemCategory={item[0].item_category}
+                itemImgUrl={item[0].item_img_url}
+                itemInfo={item[0].item_info}
               /> :
             <ItemInfo loaded={loaded} />}
           </SelectItem>
+          <SelectRelateItem>{loaded ?
+            showInstagramPost() : NothingPost()
+          }
+          </SelectRelateItem>
         </ItemDisplay>
       </Container>
     </>

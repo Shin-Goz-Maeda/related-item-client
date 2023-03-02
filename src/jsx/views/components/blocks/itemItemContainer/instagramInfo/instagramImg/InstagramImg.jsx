@@ -1,8 +1,7 @@
 import styled from "styled-components";
 
 const InstagramImg = (props) => {
-  const { instagramPost, loaded } = props;
-  console.log(instagramPost);
+  const { instagramPost, loaded, text } = props;
 
   return (
     <>

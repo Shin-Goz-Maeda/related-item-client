@@ -26,26 +26,39 @@ const Item = () => {
   };
 
   useEffect(() => {
-    setLoaded(false);
     fetch(HOST_DOMAIN + "/item/" + id)
       .then((response) => {
         response.json()
       .then((data) => {
         setItem(data)
         setLoaded(true);
-        console.log(data)
         })
       });
-  }, []);
+  }, [id]);
+
+  useEffect(() => {
+    // 投稿の描画が終わったらスクリプトを読みこませる。
+    if (loaded) {
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+
+      let attr = document.createAttribute("src");
+      attr.value = "//www.instagram.com/embed.js";
+      script.setAttributeNode(attr);
+
+      const head = document.getElementsByTagName("head")[0];
+      head.appendChild(script);
+    }
+  }, [loaded]);
 
   const showInstagramPost = () => {
-    const a = item.map((value) => <InstagramImg instagramPost={value.instagram_embed_code} />)
+    const a = item.map((value, key) => <InstagramImg key={key} instagramPost={value.instagram_embed_code} />)
     return a
   };
 
-  const NothingPost = () => {
-    const b = <InstagramImg loaded={loaded}/>
-    return b;
+  const LoadingPost = () => {
+    const c = <InstagramImg loaded={loaded}/>
+    return c;
   };
 
   return (
@@ -65,7 +78,7 @@ const Item = () => {
             <ItemInfo loaded={loaded} />}
           </SelectItem>
           <SelectRelateItem>{loaded ?
-            showInstagramPost() : NothingPost()
+            showInstagramPost() :  LoadingPost()
           }
           </SelectRelateItem>
         </ItemDisplay>

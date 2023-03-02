@@ -1,15 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import Header from "../header/Header";
 import Menu from "../../components/blocks/menu/Menu";
+import { HOST_DOMAIN } from '../../../common/constant/constants';
 import ItemInfo from '../../components/blocks/itemItemContainer/itemInfo/ItemInfo';
-import InstagramImg from '../../components/blocks/itemItemContainer/instagramInfo/instagramImg/InstagramImg';
 import styled from "styled-components";
 
-const Item = (props) => {
-  const { item, instagramPosts } = props;
-  const [isShowMenu, setIsShowMenu] = useState(false);
-  // デバック用
-  console.log(instagramPosts);
+const Item = () => {
+  const [ item, setItem ] = useState();
+  const [ isShowMenu, setIsShowMenu] = useState(false);
+  const [ loaded, setLoaded ] = useState(false);
+
+  // URLからアイテムナンバーを取得
+  const { id } = useParams();
 
   const handleMenu = () => {
     setIsShowMenu(!isShowMenu);
@@ -21,33 +24,34 @@ const Item = (props) => {
     }
   };
 
+  useEffect(() => {
+    setLoaded(false);
+    fetch(HOST_DOMAIN + "/item/" + id)
+      .then((response) => {
+        response.json()
+      .then((data) => {
+        setItem(data)
+        setLoaded(true);
+        })
+      });
+  }, []);
+
   return (
     <>
       <Header onClick={handleMenu} />
       <Container>
         { menuDisplay() }
         <ItemDisplay>
-          <SelectItem>
+          <SelectItem>{loaded ?
             <ItemInfo
-              key={item.id}
-              itemName={item.itemName}
-              brand={item.brand}
-              itemCategory={item.itemCategory}
-              itemPicUrl={item.itemPicUrl}
-              itemInfo={item.itemInfo}
-            />
+                itemName={item.itemName}
+                brand={item.brand}
+                itemCategory={item.itemCategory}
+                itemImgUrl={item.itemImgUrl}
+                itemInfo={item.itemInfo}
+              /> :
+            <ItemInfo loaded={loaded} />}
           </SelectItem>
-          {/* <SelectRelateItem>
-          {typeof instagramPosts !== "undefined" && instagramPosts.map((value) => {
-            return (
-              <InstagramImg
-                key={value.id}
-                itemId={value.itemId}
-                instagramEmbedCode={value.instagramEmbedCode}
-              />
-            )
-          })};
-          </SelectRelateItem> */}
         </ItemDisplay>
       </Container>
     </>

@@ -4,7 +4,6 @@ import Header from "../header/Header";
 import Menu from "../../components/blocks/menu/Menu";
 import { HOST_DOMAIN } from '../../../common/constant/constants';
 import ItemInfo from '../../components/blocks/itemItemContainer/itemInfo/ItemInfo';
-// import InstagramImg from '../../components/blocks/itemItemContainer/instagramInfo/instagramImg/InstagramImg';
 import styled from "styled-components";
 
 const Item = () => {
@@ -14,12 +13,6 @@ const Item = () => {
 
   // URLからアイテムナンバーを取得
   const { id } = useParams();
-  const itemId = id - 1;
-  // デバック用
-  console.log(itemId);
-
-  // デバック用
-  // console.log(instagramPosts);
 
   const handleMenu = () => {
     setIsShowMenu(!isShowMenu);
@@ -50,25 +43,15 @@ const Item = () => {
         { menuDisplay() }
         <ItemDisplay>
           <SelectItem>{loaded ?
-          <ItemInfo
-              itemName={item.itemName}
-              brand={item.brand}
-              itemCategory={item.itemCategory}
-              itemImgUrl={item.itemImgUrl}
-              itemInfo={item.itemInfo}
-            /> : <ItemInfo load="ロード中" />}
+            <ItemInfo
+                itemName={item.itemName}
+                brand={item.brand}
+                itemCategory={item.itemCategory}
+                itemImgUrl={item.itemImgUrl}
+                itemInfo={item.itemInfo}
+              /> :
+            <ItemInfo loaded={loaded} />}
           </SelectItem>
-          {/* <SelectRelateItem>
-          {typeof instagramPosts !== "undefined" && instagramPosts.map((value) => {
-            return (
-              <InstagramImg
-                key={value.id}
-                itemId={value.itemId}
-                instagramEmbedCode={value.instagramEmbedCode}
-              />
-            )
-          })};
-          </SelectRelateItem> */}
         </ItemDisplay>
       </Container>
     </>

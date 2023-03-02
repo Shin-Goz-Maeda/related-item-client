@@ -29,7 +29,6 @@ const Main = () => {
         setItems(data)
       });
     });
-    console.log(items)
   }, []);
 
   return (

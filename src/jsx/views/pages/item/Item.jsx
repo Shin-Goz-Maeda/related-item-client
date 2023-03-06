@@ -4,6 +4,7 @@ import Header from "../header/Header";
 import Menu from "../../components/blocks/menu/Menu";
 import { HOST_DOMAIN } from '../../../common/constant/constants';
 import ItemInfo from '../../components/blocks/itemItemContainer/itemInfo/ItemInfo';
+import InstagramImg from '../../components/blocks/itemItemContainer/instagramInfo/instagramImg/InstagramImg';
 import styled from "styled-components";
 
 const Item = () => {
@@ -25,7 +26,6 @@ const Item = () => {
   };
 
   useEffect(() => {
-    setLoaded(false);
     fetch(HOST_DOMAIN + "/item/" + id)
       .then((response) => {
         response.json()
@@ -34,7 +34,32 @@ const Item = () => {
         setLoaded(true);
         })
       });
-  }, []);
+  }, [id]);
+
+  useEffect(() => {
+    // 投稿の描画が終わったらスクリプトを読みこませる。
+    if (loaded) {
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+
+      let attr = document.createAttribute("src");
+      attr.value = "//www.instagram.com/embed.js";
+      script.setAttributeNode(attr);
+
+      const head = document.getElementsByTagName("head")[0];
+      head.appendChild(script);
+    }
+  }, [loaded]);
+
+  const showInstagramPost = () => {
+    const a = item.map((value, key) => <InstagramImg key={key} instagramPost={value.instagram_embed_code} />)
+    return a
+  };
+
+  const LoadingPost = () => {
+    const c = <InstagramImg loaded={loaded}/>
+    return c;
+  };
 
   return (
     <>
@@ -44,14 +69,18 @@ const Item = () => {
         <ItemDisplay>
           <SelectItem>{loaded ?
             <ItemInfo
-                itemName={item.itemName}
-                brand={item.brand}
-                itemCategory={item.itemCategory}
-                itemImgUrl={item.itemImgUrl}
-                itemInfo={item.itemInfo}
+                itemName={item[0].item_name}
+                brand={item[0].brand}
+                itemCategory={item[0].item_category}
+                itemImgUrl={item[0].item_img_url}
+                itemInfo={item[0].item_info}
               /> :
             <ItemInfo loaded={loaded} />}
           </SelectItem>
+          <SelectRelateItem>{loaded ?
+            showInstagramPost() :  LoadingPost()
+          }
+          </SelectRelateItem>
         </ItemDisplay>
       </Container>
     </>

@@ -1,20 +1,25 @@
 import styled from "styled-components";
 
 const InstagramImg = (props) => {
-  const { instagramEmbedCode } = props;
-  console.log(instagramEmbedCode);
+  const { instagramPost, loaded, text } = props;
 
   return (
-    <InstagramImgContainer
-      dangerouslySetInnerHTML={{ __html: instagramEmbedCode}}
-    >
-    </InstagramImgContainer>
+    <>
+    {loaded ?
+      <InstagramImgContainer>ロード中</InstagramImgContainer> :
+      <InstagramImgContainer
+        dangerouslySetInnerHTML={{ __html: instagramPost}}
+      >
+      </InstagramImgContainer>
+    }
+    </>
   );
 };
 
 const InstagramImgContainer = styled.div`
   width: 100%;
   height: 100%;
+  display: flex;
 `;
 
 

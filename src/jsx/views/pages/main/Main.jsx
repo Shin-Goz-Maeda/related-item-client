@@ -42,10 +42,10 @@ const Main = () => {
             <Link to={`item/${value.id}`} key={index}>
               <ItemContainer
                 itemId={value.id}
-                itemName={value.itemName}
+                itemName={value.item_name}
                 brand={value.brand}
-                itemCategory={value.itemCategory}
-                itemUrl={value.itemImgUrl}
+                itemCategory={value.item_category}
+                itemUrl={value.item_img_url}
               />
             </Link>
           );

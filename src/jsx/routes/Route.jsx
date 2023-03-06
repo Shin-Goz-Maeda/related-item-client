@@ -11,25 +11,100 @@ import Search from '../views/pages/search/Search';
 import SignUp from '../views/pages/signup/SignUp';
 import WithdrawalComplete from '../views/pages/withdrawal/WithdrawalComplete';
 import WithdrawalConfirmation from '../views/pages/withdrawal/WithdrawalConfirmation';
+import PublicRoute from './PublicRoute';
+import PrivateRoute from './PrivateRoute';
+import { AuthProvider } from "../common/context/AuthContext";
 
 const RouterConfig =() => {
 
   return (
     <>
-     <BrowserRouter>
-      <Routes>
-        <Route index element={<Main />} />
-        <Route path="item/:id" element={<Item />} />
-        <Route path="login" element={<Login />} />
-        <Route path="pwreconfiguration" element={<PwReconfiguration />} />
-        <Route path="pwreset" element={<PwReset />} />
-        <Route path="pwreconfigurationcomplete" element={<PwReconfigurationComplete />} />
-        <Route path="search" element={<Search />} />
-        <Route path="SignUp" element={<SignUp />} />
-        <Route path="withdrawalcomplete" element={<WithdrawalComplete />} />
-        <Route path="withdrawalconfirmation" element={<WithdrawalConfirmation />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <Main />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="item/:id"
+            element={
+              <PrivateRoute>
+                <Item />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="search"
+            element={
+              <PrivateRoute>
+                <Search />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="withdrawalcomplete"
+            element={
+              <PrivateRoute>
+                <WithdrawalComplete />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="withdrawalconfirmation"
+            element={
+              <PrivateRoute>
+                <WithdrawalConfirmation />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="signup"
+            element={
+              <PublicRoute>
+                <SignUp />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="pwreset"
+            element={
+              <PublicRoute>
+                <PwReset />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="pwreconfiguration"
+            element={
+              <PublicRoute>
+                <PwReconfiguration />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="pwreconfigurationcomplete"
+            element={
+              <PublicRoute>
+                <PwReconfigurationComplete />
+              </PublicRoute>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
     </>
   );
 }

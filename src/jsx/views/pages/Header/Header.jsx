@@ -1,29 +1,59 @@
 import styled from 'styled-components';
 import MenuIcon from '@mui/icons-material/Menu';
 import logoImg from '../../../../img/Logo.jpeg';
-import { SignUpButton, SignInButton } from '../../components/atoms/Button';
+import { SignUpButton, SignInButton, LogOutButton } from '../../components/atoms/Button';
 import { Link } from "react-router-dom";
+import { signOut } from 'firebase/auth';
+import { auth } from "../../../common/firebase/firebase";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from '../../../common/context/AuthContext';
 
 const Header = (props) => {
+  const { user } = useAuthContext();
+  const navigate = useNavigate();
   const { onClick } = props;
-  return (
-    <HeaderContainer id="header">
-      <MenuContainer>
-        <MenuIcon onClick={onClick}/>
-      </MenuContainer>
-      <LogoContainer>
-        <Link to="/"><LogoImg src={logoImg} /></Link>
-      </LogoContainer>
-      <ButtonContainer>
-        <SignUpButton>
-          <Link to="signup">新規登録</Link>
-        </SignUpButton>
-        <SignInButton>
-          <Link to="login">ログイン</Link>
-        </SignInButton>
-      </ButtonContainer>
-    </HeaderContainer>
-  );
+
+  const handleLogout = () => {
+    signOut(auth);
+    navigate("/login");
+  };
+
+  if (user) {
+    return (
+      <HeaderContainer id="header">
+        <MenuContainer>
+          <MenuIcon onClick={onClick}/>
+        </MenuContainer>
+        <LogoContainer>
+          <Link to="/"><LogoImg src={logoImg} /></Link>
+        </LogoContainer>
+        <ButtonContainer>
+          <LogOutButton onClick={handleLogout}>
+            <Link to="login">ログアウト</Link>
+          </LogOutButton>
+        </ButtonContainer>
+      </HeaderContainer>
+    )
+  } else {
+    return (
+      <HeaderContainer id="header">
+        <MenuContainer>
+          <MenuIcon onClick={onClick}/>
+        </MenuContainer>
+        <LogoContainer>
+          <Link to="/"><LogoImg src={logoImg} /></Link>
+        </LogoContainer>
+        <ButtonContainer>
+          <SignUpButton>
+            <Link to="signup">新規登録</Link>
+          </SignUpButton>
+          <SignInButton>
+            <Link to="login">ログイン</Link>
+          </SignInButton>
+        </ButtonContainer>
+      </HeaderContainer>
+    );
+  }
 };
 
 const HeaderContainer = styled.div`

@@ -18,3 +18,8 @@ export const SignUpButton = styled(BaseButton)`
 export const SignInButton = styled(BaseButton)`
   background-color: blue;
 `;
+
+// ログインボタン
+export const LogOutButton = styled(BaseButton)`
+  background-color: red;
+`;

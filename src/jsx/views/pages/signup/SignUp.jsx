@@ -1,10 +1,13 @@
 import { useRef, useState, useContext } from 'react'
 import { useNavigate, Link } from "react-router-dom";
+import { signInWithPopup, sendEmailVerification } from "firebase/auth";
 import { HOST_DOMAIN } from '../../../common/constant/constants';
 import { AuthContext } from "../../../common/context/AuthContext";
+import { GoogleAuthButton } from "../../components/atoms/Button";
+import { auth, googleProvider } from "../../../common/firebase/firebase";
 
 function SignUp() {
-  const { setUser, setSignInCheck, userState, setUserState } = useContext(AuthContext);
+  const { user, setUser, setSignInCheck, userState, setUserState } = useContext(AuthContext);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const navigate = useNavigate();
@@ -34,15 +37,16 @@ function SignUp() {
     }
     await fetch(HOST_DOMAIN + "/signup", postParameter)
       .then((response) => response.json())
-      .then((data) => {
-        setUser(data.user);
+      .then((result) => {
         setSignInCheck(true);
-        if(data.user) {
+        setUser(result.user);
+        console.log(result.user)
+        if(result.user) {
           navigate("/")
         }
       })
       .catch((error)  => {
-        console.log(error.code);
+        console.log(error);
         switch (error.code) {
           case "auth/invaid-email":
             setError("正しいメールアドレスの形式で入力してください。");
@@ -58,6 +62,18 @@ function SignUp() {
             break;
         }
       });
+  };
+
+  const handleGoogleSignUp = () => {
+    signInWithPopup(auth, googleProvider)
+    .then((result) => {
+      setSignInCheck(true);
+      setUser(result.user)
+      navigate("/")
+    })
+    .catch((error) => {
+      console.log(error.message)
+    })
   };
 
   return (
@@ -86,10 +102,14 @@ function SignUp() {
           />
         </div>
         <button>登録</button>
-        <div>
-          ログインは<Link to="/login">こちら</Link>から
-        </div>
       </form>
+      <div>----------------------</div>
+      <div onClick={handleGoogleSignUp}>
+        <GoogleAuthButton>Googleアカウントで登録</GoogleAuthButton>
+      </div>
+      <div>
+        ログインは<Link to="/login">こちら</Link>から
+      </div>
     </div>
   )
 };

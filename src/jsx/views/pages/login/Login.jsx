@@ -1,7 +1,10 @@
-import { useRef, useState, useContext } from 'react'
+import { useRef, useState, useContext, useEffect } from 'react'
 import { Link, useNavigate } from "react-router-dom";
+import { signInWithPopup, onAuthStateChanged} from "firebase/auth";
 import { HOST_DOMAIN } from '../../../common/constant/constants';
 import { AuthContext } from "../../../common/context/AuthContext";
+import { GoogleAuthButton } from "../../components/atoms/Button";
+import { auth, googleProvider } from "../../../common/firebase/firebase";
 
 function Login() {
   const { setUser, setSignInCheck } = useContext(AuthContext);
@@ -27,10 +30,11 @@ function Login() {
     }
     await fetch(HOST_DOMAIN + "/login", postParameter)
     .then((response) => response.json())
-    .then((data) => {
-      setUser(data.user)
+    .then((result) => {
       setSignInCheck(true);
-      if(data.user) {
+      setUser(result.user)
+      console.log(result.user)
+      if(result.user) {
         navigate("/")
       }
     })
@@ -51,6 +55,27 @@ function Login() {
       }
     });
   };
+
+  const handleGoogleSignIn = () => {
+    signInWithPopup(auth, googleProvider)
+    .then((result) => {
+      setSignInCheck(true);
+      setUser(result.user);
+      navigate("/")
+    })
+    .catch((error) => {
+      console.log(error.message)
+    })
+  };
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("ユーザ内")
+      }
+      console.log("レンダリング後")
+    })
+  }, [])
 
   return (
     <div>
@@ -78,10 +103,14 @@ function Login() {
           />
         </div>
         <button>ログイン</button>
-        <div>
-          ユーザ登録は<Link to="/signup">こちら</Link>から
-        </div>
       </form>
+      <div>----------------------</div>
+      <div onClick={handleGoogleSignIn}>
+        <GoogleAuthButton>Googleアカウントでログイン</GoogleAuthButton>
+      </div>
+      <div>
+        ユーザ登録は<Link to="/signup">こちら</Link>から
+      </div>
     </div>
   )
 }

@@ -1,11 +1,26 @@
 import styled from 'styled-components';
 import MenuIcon from '@mui/icons-material/Menu';
 import logoImg from '../../../../img/Logo.jpeg';
-import { SignUpButton, SignInButton } from '../../components/atoms/Button';
-import { Link } from "react-router-dom";
+import { LogOutButton } from '../../components/atoms/Button';
+import { Link, useNavigate } from "react-router-dom";
+import { signOut } from 'firebase/auth';
+import { auth } from "../../../common/firebase/firebase";
+import { useContext } from 'react';
+import { AuthContext } from '../../../common/context/AuthContext';
 
 const Header = (props) => {
+  const { setUser, setSignInCheck } = useContext(AuthContext);
+  const navigate = useNavigate();
   const { onClick } = props;
+
+  // ログアウト処理
+  const handleLogout = () => {
+    setSignInCheck(false);
+    setUser("");
+    signOut(auth);
+    navigate("/login");
+  };
+
   return (
     <HeaderContainer id="header">
       <MenuContainer>
@@ -15,15 +30,12 @@ const Header = (props) => {
         <Link to="/"><LogoImg src={logoImg} /></Link>
       </LogoContainer>
       <ButtonContainer>
-        <SignUpButton>
-          <Link to="signup">新規登録</Link>
-        </SignUpButton>
-        <SignInButton>
-          <Link to="login">ログイン</Link>
-        </SignInButton>
+        <LogOutButton onClick={handleLogout}>
+          <Link to="login">ログアウト</Link>
+        </LogOutButton>
       </ButtonContainer>
     </HeaderContainer>
-  );
+  )
 };
 
 const HeaderContainer = styled.div`

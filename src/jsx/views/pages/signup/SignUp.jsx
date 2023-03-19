@@ -1,13 +1,13 @@
 import { useRef, useState, useContext } from 'react'
 import { useNavigate, Link } from "react-router-dom";
-import { signInWithPopup, sendEmailVerification } from "firebase/auth";
+import { signInWithPopup } from "firebase/auth";
 import { HOST_DOMAIN } from '../../../common/constant/constants';
 import { AuthContext } from "../../../common/context/AuthContext";
 import { GoogleAuthButton } from "../../components/atoms/Button";
 import { auth, googleProvider } from "../../../common/firebase/firebase";
 
 function SignUp() {
-  const { user, setUser, setSignInCheck, userState, setUserState } = useContext(AuthContext);
+  const { setUser, setSignInCheck } = useContext(AuthContext);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const navigate = useNavigate();
@@ -16,7 +16,6 @@ function SignUp() {
   // サブミット時の処理
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setUserState(0);
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     const createdAt = Date.now();
@@ -30,7 +29,6 @@ function SignUp() {
       body: JSON.stringify({
         email,
         password,
-        userState,
         createdAt,
         updatedAt
       })
@@ -45,9 +43,10 @@ function SignUp() {
           navigate("/")
         }
       })
+      // TODO:エラーコードをloginページと共通化する。
       .catch((error)  => {
         console.log(error);
-        switch (error.code) {
+        switch (error) {
           case "auth/invaid-email":
             setError("正しいメールアドレスの形式で入力してください。");
             break;

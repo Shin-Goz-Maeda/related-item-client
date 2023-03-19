@@ -1,6 +1,4 @@
-import { createContext, useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../../common/firebase/firebase";
+import { createContext, useState } from "react";
 
 export const AuthContext = createContext();
 
@@ -8,16 +6,13 @@ export const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [ user, setUser ] = useState("");
   const [ signInCheck, setSignInCheck ] = useState(false);
-  const [ userState, setUserState ] = useState();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const value = {
     user,
     setUser,
     signInCheck,
-    setSignInCheck,
-    userState,
-    setUserState,
+    setSignInCheck
   };
 
   return(

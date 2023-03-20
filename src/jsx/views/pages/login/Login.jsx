@@ -31,15 +31,19 @@ function Login() {
     await fetch(HOST_DOMAIN + "/login", postParameter)
     .then((response) => response.json())
     .then((result) => {
-      setSignInCheck(true);
-      setUser(result.user)
-      console.log(result.user)
-      if(result.user) {
-        navigate("/")
+      if (result != 1) {
+        setSignInCheck(true);
+        setUser(result.user)
+        console.log(result.user)
+        if(result.user) {
+          navigate("/")
+        }
+      } else {
+        setError("メールアドレス認証を完了してください。");
       }
     })
     .catch((error) => {
-      switch ( error.code) {
+      switch (error.code) {
         case "auth/invalid-email":
           setError("正しいメールアドレスの形式で入力してください。");
           break;
@@ -111,6 +115,7 @@ function Login() {
       <div>
         ユーザ登録は<Link to="/signup">こちら</Link>から
       </div>
+      <div>パスワードを忘れた方は<Link to="/pwreset">こちら</Link>をクリック</div>
     </div>
   )
 }

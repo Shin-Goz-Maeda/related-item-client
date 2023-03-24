@@ -1,27 +1,21 @@
 import styled from "styled-components";
 
-const ItemDetailInformation = (props) => {
+
+function ItemDetailInformation(props) {
   const { itemName, brand, itemInfo, itemCategory } = props;
 
   return (
     <ItemInfoContainer>
       <ItemInfoLists>
-        <ItemInfoList>
-          {itemName}
-        </ItemInfoList>
-        <ItemInfoList>
-          {brand}
-        </ItemInfoList>
-        <ItemInfoList>
-          {itemCategory}
-        </ItemInfoList>
-        <ItemInfoList>
-          {itemInfo}
-        </ItemInfoList>
+        <ItemInfoList>{itemName}</ItemInfoList>
+        <ItemInfoList>{brand}</ItemInfoList>
+        <ItemInfoList>{itemCategory}</ItemInfoList>
+        <ItemInfoList>{itemInfo}</ItemInfoList>
       </ItemInfoLists>
     </ItemInfoContainer>
   );
 };
+
 
 const ItemInfoContainer = styled.div`
   width: 50%;
@@ -36,5 +30,6 @@ const ItemInfoLists = styled.ul`
 `;
 
 const ItemInfoList = styled.li``;
+
 
 export default ItemDetailInformation;

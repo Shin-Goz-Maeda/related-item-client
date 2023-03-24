@@ -1,41 +1,29 @@
-import Header from '../header/Header';
-import Menu from '../../components/blocks/menu/Menu';
-import { HOST_DOMAIN } from '../../../common/constant/constants';
-import ItemContainer from '../../components/blocks/mainItemContainer/ItemContainer';
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import styled from 'styled-components';
-import { useState, useEffect } from 'react';
+import styled from "styled-components";
+import { HOST_DOMAIN } from "../../../common/constant/constants";
+import Header from "../../components/blocks/header/Header";
+import ItemContainer from "../../components/blocks/mainItemContainer/ItemContainer";
 
-const Main = () => {
+
+function Main() {
   const [ items, setItems ] = useState();
-  const [ isShowMenu, setIsShowMenu ] = useState(false);
 
-  const handleMenu = () => {
-    setIsShowMenu(!isShowMenu);
-  };
-
-  const menuDisplay = () => {
-    if (isShowMenu) {
-      return <Menu />;
-    }
-  };
-
-  // DBからアイテム情報をすべて取得
-  useEffect(() => {
+   // DBからアイテム情報をすべて取得
+   useEffect(() => {
     fetch(HOST_DOMAIN + "/getImage")
       .then((response) => {
         response.json()
-      .then((data) => {
-        setItems(data)
+        .then((data) => {
+          setItems(data);
+        });
       });
-    });
   }, []);
 
   return (
     <>
-      <Header onClick={handleMenu} />
-      <Container id='container'>
-        { menuDisplay() }
+      <Header />
+      <Container id="container">
         <ItemSpace>
         {typeof items !== "undefined" && items.map((value, index) => {
           return (
@@ -49,12 +37,13 @@ const Main = () => {
               />
             </Link>
           );
-        })};
+        })}
         </ItemSpace>
       </Container>
     </>
   );
-}
+};
+
 
 const Container = styled.div`
   border: 5px solid #000;
@@ -70,5 +59,6 @@ const ItemSpace = styled.div`
   flex-wrap: wrap;
   justify-content: space-around;
 `;
+
 
 export default Main;

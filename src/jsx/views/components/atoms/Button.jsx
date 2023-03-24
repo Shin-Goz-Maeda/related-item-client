@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
-// ベースのボタン
+
+// ベースボタン
 const BaseButton = styled.button`
   text-align: center;
   color: white;
@@ -9,17 +10,7 @@ const BaseButton = styled.button`
   margin-right: 50px;
 `;
 
-// 新規登録ボタン
-export const SignUpButton = styled(BaseButton)`
-  background-color: green;
-`;
-
-// ログインボタン
-export const SignInButton = styled(BaseButton)`
-  background-color: blue;
-`;
-
-// ログインボタン
+// ログアウトボタン
 export const LogOutButton = styled(BaseButton)`
   background-color: red;
 `;

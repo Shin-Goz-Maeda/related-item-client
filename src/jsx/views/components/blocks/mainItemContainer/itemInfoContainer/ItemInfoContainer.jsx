@@ -1,18 +1,38 @@
 import styled from "styled-components";
 
-const ItemInfoContainer = (props) => {
+
+function ItemInfoContainer(props) {
   const { itemName, brand, itemCategory } = props;
 
   return (
-    <ItemInfoContent id='itemInfo' className='itemInfo'>
+    <ItemInfoContent
+      id="itemInfo"
+      className="itemInfo"
+    >
       <ItemInfoLists>
-        <ItemInfoList id='brand' className='item'>{brand}</ItemInfoList>
-        <ItemInfoList id='itemName' className='item'>{itemName}</ItemInfoList>
-        <ItemInfoList id='itemCategory' className='item'>{itemCategory}</ItemInfoList>
+        <ItemInfoList
+          id="brand"
+          className="item"
+        >
+          {brand}
+        </ItemInfoList>
+        <ItemInfoList
+          id="itemName"
+          className="item"
+        >
+          {itemName}
+        </ItemInfoList>
+        <ItemInfoList
+          id="itemCategory"
+          className="item"
+        >
+          {itemCategory}
+        </ItemInfoList>
       </ItemInfoLists>
     </ItemInfoContent>
   );
 };
+
 
 const ItemInfoContent = styled.div`
   width: 95%;
@@ -30,5 +50,6 @@ const ItemInfoLists = styled.ul`
 const ItemInfoList = styled.li`
   list-style: none;
 `;
+
 
 export default ItemInfoContainer;

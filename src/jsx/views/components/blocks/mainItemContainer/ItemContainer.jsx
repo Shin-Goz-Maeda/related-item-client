@@ -1,13 +1,14 @@
-import ItemImage from './itemImage/ItemImage';
-import ItemInfoContainer from './itemInfoContainer/ItemInfoContainer';
-import styled from 'styled-components';
+import styled from "styled-components";
+import ItemImage from "./itemImage/ItemImage";
+import ItemInfoContainer from "./itemInfoContainer/ItemInfoContainer";
 
-const ItemContainer = (props) => {
+
+function ItemContainer(props) {
   const { itemName, brand, itemUrl, itemCategory } = props;
 
   return (
-    <ItemsContainer className='itemContainer'>
-      <ItemImage itemUrl={itemUrl}/>
+    <ItemsContainer className="itemContainer">
+      <ItemImage itemUrl={itemUrl} />
       <ItemInfoContainer
         itemName={itemName}
         brand={brand}
@@ -17,11 +18,13 @@ const ItemContainer = (props) => {
   );
 };
 
+
 const ItemsContainer = styled.div`
   width: 300px;
   height: 350px;
   margin: 20px;
   border: 3px solid blue;
 `;
+
 
 export default ItemContainer;

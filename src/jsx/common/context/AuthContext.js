@@ -1,13 +1,14 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase/firebase";
 
 export const AuthContext = createContext();
 
-// 共通する値を設定
+// 共通する値dを設定
 export function AuthProvider({ children }) {
   const [ user, setUser ] = useState("");
   const [ signInCheck, setSignInCheck ] = useState(false);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const value = {
     user,
     setUser,
@@ -15,9 +16,16 @@ export function AuthProvider({ children }) {
     setSignInCheck
   };
 
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      console.log(user);
+    });
+  }, []);
+
   return(
     <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
-  )
-}
+  );
+};

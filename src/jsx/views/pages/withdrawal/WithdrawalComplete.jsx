@@ -1,10 +1,18 @@
-import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-const WithdrawalComplete = () => {
 
+function WithdrawalComplete() {
   return (
-    <h1>WithdrawalCompletePage</h1>
+    <div>
+      <h3>
+        退会が完了しました。
+      </h3>
+      <div>
+        ユーザ再登録は<Link to="/signup">こちら</Link>から
+      </div>
+    </div>
   );
 };
+
 
 export default WithdrawalComplete;

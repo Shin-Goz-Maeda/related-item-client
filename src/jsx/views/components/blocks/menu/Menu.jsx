@@ -1,8 +1,9 @@
-import styled from "styled-components";
 import { Link } from "react-router-dom";
-import MenuData from '../menu/MenuData';
+import styled from "styled-components";
+import MenuData from "../menu/MenuData";
 
-const Menu = () => {
+
+function Menu() {
   return (
     <SidebarContainer>
       <SidebarLists>
@@ -15,11 +16,12 @@ const Menu = () => {
               </Link>
             </SidebarList>
           );
-        })};
+        })}
       </SidebarLists>
     </SidebarContainer>
   );
 };
+
 
 const SidebarContainer = styled.div`
   height: 100%;
@@ -51,5 +53,6 @@ const ListTitle = styled.div`
   height: 60px;
   color: white;
 `;
+
 
 export default Menu;

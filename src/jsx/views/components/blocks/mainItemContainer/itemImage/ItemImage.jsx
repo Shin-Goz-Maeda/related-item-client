@@ -1,14 +1,16 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-const ItemImage = (props) => {
+
+function ItemImage(props) {
   const { itemUrl } = props;
 
   return (
-    <ItemsImage id='itemImage' className='itemImage'>
+    <ItemsImage id="itemImage" className="itemImage">
       <Img src={itemUrl} />
     </ItemsImage>
   );
 };
+
 
 const ItemsImage = styled.div`
   width: 95%;
@@ -23,5 +25,6 @@ const Img = styled.img`
   width: 100%;
   height: 100%;
 `;
+
 
 export default ItemImage;

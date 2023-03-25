@@ -1,7 +1,9 @@
-import ItemImg from "./itemImg/ItemImg";
-import ItemDetailInformation from "./itemDetailInfomation/ItemDetailInfomation";
+import ItemImg from "../itemInfo/ItemImg"
+import ItemDetailInformation from "../itemInfo/ItemDetailInfomation";
+
 
 function ItemInfo(props) {
+  // アイテムページからアイテム情報を受け取る。
   const { itemImgUrl, itemName, brand, itemInfo, itemCategory, loaded } = props;
 
   return (

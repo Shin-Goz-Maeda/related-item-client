@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { HOST_DOMAIN } from "../../../common/constant/constants";
 import Header from "../../components/blocks/header/Header";
-import ItemContainer from "../../components/blocks/mainItemContainer/ItemContainer";
+import ItemContainer from "../../components/blocks/mainPageItemContainer/ItemContainer";
 
 
 function Main() {
@@ -20,11 +20,13 @@ function Main() {
       });
   }, []);
 
+  // 取得したアイテム情報を個別に表示
   return (
     <>
       <Header />
-      <Container id="container">
+      <Container>
         <ItemSpace>
+          {/* TODO:undefinedを変更する */}
         {typeof items !== "undefined" && items.map((value, index) => {
           return (
             <Link to={`item/${value.id}`} key={index}>

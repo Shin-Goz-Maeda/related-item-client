@@ -1,5 +1,6 @@
 import { useState, useRef, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import { AuthContext } from "../../../common/context/AuthContext";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../../common/firebase/firebase";
@@ -7,23 +8,19 @@ import Header from "../../components/blocks/header/Header";
 
 
 function PwReset() {
-  const { user } = useContext(AuthContext);
-  const emailRef = useRef(null);
+  const { user, actionSetting } = useContext(AuthContext);
   const [ setError ] = useState();
   const [ success, setSuccess ] = useState();
+  const emailRef = useRef(null);
   const navigate = useNavigate();
 
+  // ログイン後のパスワードリセット処理
   const handleChangePasswordLogged = async (event) => {
     event.preventDefault();
     const email = user.email;
 
-    const actionCodeSettings = {
-      //パスワード再設定後のリダイレクトURL
-      url: "http://localhost:3000/",
-      handleCodeInApp: false
-    };
-
-    sendPasswordResetEmail(auth, email, actionCodeSettings)
+    // firebaseのパスワード再設定メソッド
+    sendPasswordResetEmail(auth, email, actionSetting("/"))
       .then(() => {
         setSuccess("パスワード再設定メールを送信しました。");
         setTimeout(() => {
@@ -32,17 +29,13 @@ function PwReset() {
       });
   };
 
+  // ログイン画面のパスワードリセット処理
   const handleChangePassword = async (event) => {
     event.preventDefault();
     const email = emailRef.current.value;
 
-    const actionCodeSettings = {
-      //パスワード再設定後のリダイレクトURL
-      url: "http://localhost:3000/login",
-      handleCodeInApp: false
-    };
-
-    sendPasswordResetEmail(auth, email, actionCodeSettings)
+    // firebaseのパスワード再設定メソッド
+    sendPasswordResetEmail(auth, email, actionSetting("/login"))
       .then(() => {
         setSuccess("パスワード再設定メールを送信しました。");
         setTimeout(() => {
@@ -55,44 +48,62 @@ function PwReset() {
       });
   };
 
+  // ログイン状態を判定して画面表示を切り替え
   return (
     <>
       {user ?
         <>
           <Header />
-          <div>
-            <h1>パスワードリセット</h1>
-            <form onSubmit={handleChangePasswordLogged}>
+          <PasswordResetContainer>
+            <PageTitle>パスワードリセット</PageTitle>
+            <ResetForm onSubmit={handleChangePasswordLogged}>
               {success && <p style={{ color: "blue" }}>{success}</p>}
-              <button>再設定メールを送信</button>
-            </form>
-          </div>
+              <SubmitButton>再設定メールを送信</SubmitButton>
+            </ResetForm>
+          </PasswordResetContainer>
         </> :
-        <div>
-          <h1>パスワードリセット</h1>
-          <form onSubmit={handleChangePassword}>
+        <PasswordResetContainer>
+          <PageTitle>パスワードリセット</PageTitle>
+          <ResetForm onSubmit={handleChangePassword}>
             {success && <p style={{ color: "blue" }}>{success}</p>}
-            <div>
-              <label htmlFor="email">メールアドレス</label>
-              <input
+            <FormDiv>
+              <EmailLabel htmlFor="email">メールアドレス</EmailLabel>
+              <Input
                 type="email"
-                id="email"
-                name="email"
                 placeholder="email"
                 ref={emailRef}
               />
-            </div>
-            <button>再設定メールを送信</button>
-          </form>
-          <div>----------------------</div>
-          <div>
+            </FormDiv>
+            <SubmitButton>再設定メールを送信</SubmitButton>
+          </ResetForm>
+          <Line>----------------------</Line>
+          <LoginDiv>
             ログインは<Link to="/login">こちら</Link>から
-          </div>
-        </div>
+          </LoginDiv>
+        </PasswordResetContainer>
       }
     </>
   );
 };
+
+
+const PasswordResetContainer = styled.div``;
+
+const PageTitle = styled.h1``;
+
+const ResetForm = styled.form``;
+
+const SubmitButton = styled.button``;
+
+const Line = styled.div``;
+
+const LoginDiv = styled.div``;
+
+const EmailLabel = styled.label``;
+
+const FormDiv = styled.div``;
+
+const Input = styled.input``;
 
 
 export default PwReset;

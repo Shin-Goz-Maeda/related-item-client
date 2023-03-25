@@ -1,13 +1,14 @@
 import styled from "styled-components";
-import ItemImage from "./itemImage/ItemImage";
-import ItemInfoContainer from "./itemInfoContainer/ItemInfoContainer";
+import ItemImage from "../mainPageItemContainer/ItemImage";
+import ItemInfoContainer from "../mainPageItemContainer/ItemInfoContainer";
 
 
 function ItemContainer(props) {
+  // メインページからアイテム情報を受け取る。
   const { itemName, brand, itemUrl, itemCategory } = props;
 
   return (
-    <ItemsContainer className="itemContainer">
+    <ItemsContainer >
       <ItemImage itemUrl={itemUrl} />
       <ItemInfoContainer
         itemName={itemName}

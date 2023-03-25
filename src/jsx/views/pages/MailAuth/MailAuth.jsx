@@ -1,19 +1,21 @@
-import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 
+// アカウント登録後に認証メールを送信したことを案内。
 function MailAuth() {
   return (
     <>
-      <div>
-        <p>登録頂いたメールアドレスへ認証メールを送信しました。</p>
-        <p>メールに記載のリンクをクリックしてメール認証を行ってください。</p>
-      </div>
-      <div>
-        ログインページは<Link to="/login">こちら</Link>から
-      </div>
+      <MessageContainer>
+        <P>登録頂いたメールアドレスへ認証メールを送信しました。</P>
+        <P>メールに記載のリンクをクリックしてメール認証を行ってください。</P>
+      </MessageContainer>
     </>
   );
 };
 
+
+const MessageContainer = styled.div``;
+
+const P = styled.p``;
 
 export default MailAuth;

@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 
 function InstagramImg(props) {
+  // アイテムページからインスタグラム埋め込みコードと画面のロードステータスを受け取る。
   const { instagramPost, loaded } = props;
 
   return (

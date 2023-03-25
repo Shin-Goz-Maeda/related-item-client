@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { HOST_DOMAIN } from "../../../common/constant/constants";
 import Header from "../../components/blocks/header/Header";
-import ItemInfo from "../../components/blocks/itemItemContainer/itemInfo/ItemInfo";
-import InstagramImg from "../../components/blocks/itemItemContainer/instagramInfo/instagramImg/InstagramImg";
+import ItemInfo from "../../components/blocks/itemPageItemContainer/itemInfo/ItemInfo";
+import InstagramImg from "../../components/blocks/itemPageItemContainer/instagramInfo/InstagramImg";
 
 
 function Item() {
@@ -13,9 +13,8 @@ function Item() {
 
   // URLからアイテムナンバーを取得
   const { id } = useParams();
-  // Delete
-  console.log(id);
 
+  // DBからidにあったアイテム情報のみを取得
   useEffect(() => {
     setLoaded(false);
     fetch(HOST_DOMAIN + "/item/" + id)
@@ -24,17 +23,18 @@ function Item() {
         .then((data) => {
           setItem(data);
           setLoaded(true);
-          // Delete
-          console.log(loaded + "38")
           });
       });
-      // Delete
-      console.log(loaded + "41")
   }, [id]);
 
   useEffect(() => {
     // 投稿の描画が終わったらスクリプトを読みこませる。
     if (loaded) {
+      if (window.instgrm !== undefined) {
+        // インスタグラムの埋め込みコードを描画が終わった際に直接メソッドを呼び出すことで埋め込み情報を表示させる。
+        window.instgrm.Embeds.process();
+      };
+
       const script = document.createElement("script");
       script.type = "text/javascript";
 
@@ -44,16 +44,13 @@ function Item() {
 
       const head = document.getElementsByTagName("head")[0];
       head.appendChild(script);
-      // Delete
-      console.log(56);
     };
   }, [loaded]);
 
+  // インスタの受け込みコードがあるのかを判定
   const showInstagramPost = () => {
     if (item[0].instagram_embed_code === null) {
-      const a = <InstagramImg
-        instagramPost="該当するデータがありません。"
-      />
+      const a = <InstagramImg instagramPost="該当するデータがありません。" />;
       return a;
     } else {
       const b = item.map((value, key) =>
@@ -66,6 +63,7 @@ function Item() {
     };
   };
 
+  // インスタグラムの埋め込みコードのロード状態を受け渡す。
   const LoadingPost = () => {
     const c = <InstagramImg loaded={loaded} />;
     return c;

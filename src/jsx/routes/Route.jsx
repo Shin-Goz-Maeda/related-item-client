@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import PrivateRoute from "./PrivateRoute";
 import { AuthProvider } from "../common/context/AuthContext";
+import PrivateRoute from "./PrivateRoute";
 
 // 各ページをインポート
 import Main from "../views/pages/main/Main";
@@ -9,14 +9,15 @@ import Login  from "../views/pages/login/Login";
 import PwReset from "../views/pages/pwreset/PwReset";
 import SignUp from "../views/pages/signup/SignUp";
 import MailAuth from "../views/pages/MailAuth/MailAuth";
-import ReMailAuth from "../views/pages/MailAuth/ReMailAuth";
 import AccountSetUp from "../views/pages/AccountSetUp/AccountSetUp";
 import WithdrawalComplete from "../views/pages/withdrawal/WithdrawalComplete";
 import WithdrawalConfirmation from "../views/pages/withdrawal/WithdrawalConfirmation";
 
 
 // ルーティング処理
-function RouterConfig () {
+function RouterConfig() {
+  // <PrivateRoute>で囲っている箇所は、ログイン後のみアクセス可能
+  // ログイン前にアクセスした場合は、ログイン画面へリダイレクトする。
   return (
     <AuthProvider>
       <BrowserRouter>
@@ -73,12 +74,6 @@ function RouterConfig () {
             path="mailauth"
             element={
               <MailAuth />
-            }
-          />
-          <Route
-            path="remailauth"
-            element={
-              <ReMailAuth />
             }
           />
           <Route

@@ -3,6 +3,7 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 
 
+// メニュー情報
 const MenuData = [
   {
     title: "アカウント設定",

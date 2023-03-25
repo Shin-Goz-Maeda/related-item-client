@@ -2,10 +2,11 @@ import styled from "styled-components";
 
 
 function ItemImage(props) {
+  // ItemContainerからアイテム画像URLを受け取る。
   const { itemUrl } = props;
 
   return (
-    <ItemsImage id="itemImage" className="itemImage">
+    <ItemsImage>
       <Img src={itemUrl} />
     </ItemsImage>
   );

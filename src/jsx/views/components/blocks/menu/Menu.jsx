@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import MenuData from "../menu/MenuData";
+import MenuData from '../menu/MenuData';
 
 
 function Menu() {
+  // メニューデータからメニュー情報を受け取る。
   return (
     <SidebarContainer>
       <SidebarLists>

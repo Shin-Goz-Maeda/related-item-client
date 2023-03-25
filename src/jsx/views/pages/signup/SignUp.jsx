@@ -1,5 +1,6 @@
 import { useRef, useState, useContext } from "react"
 import { useNavigate, Link } from "react-router-dom";
+import styled from "styled-components";
 import { AuthContext } from "../../../common/context/AuthContext";
 import { signInWithPopup, getAdditionalUserInfo } from "firebase/auth";
 import { auth, googleProvider } from "../../../common/firebase/firebase";
@@ -8,13 +9,13 @@ import { GoogleAuthButton } from "../../components/atoms/Button";
 
 
 function SignUp() {
-  const { setUser, setSignInCheck } = useContext(AuthContext);
+  const { postServer, catchError, userLoggedInState } = useContext(AuthContext);
+  const [ error, setError ] = useState("");
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const navigate = useNavigate();
-  const [ error, setError ] = useState("");
 
-  // サブミット時の処理
+  // メールアドレス認証を使用したサインアップ処理
   const handleSubmit = async (event) => {
     event.preventDefault();
     const email = emailRef.current.value;
@@ -22,54 +23,37 @@ function SignUp() {
     const createdAt = Date.now();
     const updatedAt = Date.now();
 
-    const postParameter = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        email,
-        password,
-        createdAt,
-        updatedAt
-      })
-    };
-
-    await fetch(HOST_DOMAIN + "/signup-mail", postParameter)
+    // POST情報を送信
+    await fetch(HOST_DOMAIN + "/signup-mail", postServer(email, password, createdAt, updatedAt))
       .then((response) => response.json())
       .then((result) => {
-        if (result === 1) {
-          setError("このメールアドレスは使用できません。");
-        } else if (result === 2) {
+        if (result === 2) {
+          // Google認証を使って登録しているユーザーor既にメール認証で登録済のユーザーに対してブラウザにエラーを表示。
           setError("このアドレスは登録されています。");
-        } else {
+        }
+        else if (result.user.emailVerified) {
+          // 一度退会していてメール認証が完了しているユーザーは、アカウントセットアップページへ移動。
           if (result.user) {
-            setSignInCheck(true);
-            setUser(result.user);
+            userLoggedInState(true, result.user);
+            navigate("/accountsetup");
+          };
+        }
+        else {
+          if (result.user) {
+            // 初回登録のユーザーはメール認証を案内。
+            userLoggedInState(true, result.user);
             navigate("/mailauth");
           };
         };
       })
-      // TODO:エラーコードをloginページと共通化する。
       .catch((error)  => {
-        switch (error.code) {
-          case "auth/invaid-email":
-            setError("正しいメールアドレスの形式で入力してください。");
-            break;
-          case "auth/weak-password":
-            setError("パスワードは６文字以上を設定する必要があります。");
-            break;
-          case "auth/email-already-in-use":
-            setError("そのメールアドレスは登録済みです。");
-            break;
-          default:
-            setError("メールアドレスかパスワードに誤りがあります。");
-            break;
-        };
+        setError(catchError(error));
       });
   };
 
+  // Google認証を使用したサインアップ処理
   const handleGoogleSignUp = () => {
+    // firebaseのサインインメソッド
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         const provider = result.providerId;
@@ -77,23 +61,13 @@ function SignUp() {
         const uuid = result.user.uid;
         const createdAt = result.user.metadata.createdAt;
 
-        const postParameter = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            provider,
-            email,
-            uuid,
-            createdAt
-          })
-        };
+        // POST情報を送信
+        fetch(HOST_DOMAIN + "/signup-google", postServer(provider, email, uuid, createdAt));
+        userLoggedInState(true, result.user);
 
-        fetch(HOST_DOMAIN + "/signup-google", postParameter);
-        setSignInCheck(true);
-        setUser(result.user);
+        // 初回ログインユーザー
         const isNewUser = getAdditionalUserInfo(result)?.isNewUser;
+        // 初回ログインユーザーかを判定
         if (isNewUser) {
           navigate("/accountsetup");
           return;
@@ -108,45 +82,61 @@ function SignUp() {
   };
 
   return (
-    <div>
-      <h1>アカウント登録</h1>
-      <form onSubmit={handleSubmit}>
+    <RegisterContainer>
+      <PageTitle>アカウント登録</PageTitle>
+      <RegisterForm onSubmit={handleSubmit}>
       {error && <p style={{ color: "red" }}>{error}</p>}
-        <div>
-          <label htmlFor="email">メールアドレス</label>
-          <input
+        <EmailDiv>
+          <Label htmlFor="email">メールアドレス</Label>
+          <Input
             type="email"
-            id="email"
-            name="email"
             placeholder="email"
             ref={emailRef}
           />
-        </div>
-        <div>
-          <label htmlFor="password">パスワード</label>
-          <input
+        </EmailDiv>
+        <PasswordDiv>
+          <Label htmlFor="password">パスワード</Label>
+          <Input
             type="password"
-            id="password"
-            name="password"
             placeholder="password"
             ref={passwordRef}
           />
-        </div>
-        <button>登録</button>
-      </form>
-      <div>----------------------</div>
-      <div onClick={handleGoogleSignUp}>
+        </PasswordDiv>
+        <SubmitButton>登録</SubmitButton>
+      </RegisterForm>
+      <Line>----------------------</Line>
+      <GoogleAuthDiv onClick={handleGoogleSignUp}>
         <GoogleAuthButton>Googleアカウントで登録</GoogleAuthButton>
-      </div>
-      <div>
+      </GoogleAuthDiv>
+      <LoginDiv>
         ログインは<Link to="/login">こちら</Link>から
-      </div>
-      <div>
-        メールアドレスの認証が必要な方は<Link to="/remailauth">こちら</Link>をクリック
-      </div>
-    </div>
+      </LoginDiv>
+    </RegisterContainer>
   );
 };
+
+
+const RegisterContainer = styled.div``;
+
+const PageTitle = styled.h1``;
+
+const Label = styled.label``;
+
+const RegisterForm = styled.form``;
+
+const EmailDiv = styled.div``;
+
+const PasswordDiv = styled.div``;
+
+const SubmitButton = styled.button``;
+
+const Line = styled.div``;
+
+const GoogleAuthDiv = styled.div``;
+
+const LoginDiv = styled.div``;
+
+const Input = styled.input``;
 
 
 export default SignUp;

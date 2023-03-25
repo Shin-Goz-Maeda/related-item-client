@@ -4,44 +4,43 @@ import { AuthContext } from "../../../../common/context/AuthContext";
 import { signOut } from "firebase/auth";
 import { auth } from "../../../../common/firebase/firebase";
 import styled from "styled-components";
-import Drawer from '@mui/material/Drawer';
-import MenuIcon from "@mui/icons-material/Menu";
-import logoImg from "../../../../../img/Logo.jpeg";
-import { LogOutButton } from "../../atoms/Button";
 import Menu from "../menu/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Drawer from "@mui/material/Drawer";
+import LogoImg from "../../../../../img/Logo.jpeg";
+import { LogOutButton } from "../../atoms/Button";
 
 
 function Header() {
-  const { setUser, setSignInCheck } = useContext(AuthContext);
+  const { userLoggedInState } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // drawerがopenしているかどうかのstate
-  const [drawerOpened, setDrawerOpened] = useState(false);
+  // メニューの状態のフラグ
+  const [ drawerOpened, setDrawerOpened ] = useState(false);
 
   // ログアウト処理
   const handleLogout = () => {
-    setSignInCheck(false);
-    setUser("");
+    userLoggedInState(false, "");
     signOut(auth);
     navigate("/login");
   };
 
   return (
-    <HeaderContainer id="header">
+    <HeaderContainer>
       <MenuContainer>
         <MenuIcon
           style={{height: 50, width:50 }}
           onClick={() => setDrawerOpened(true)}
         />
         <Drawer
-          anchor={'left'}
+          anchor={"left"}
           open={drawerOpened}
           onClose={() => setDrawerOpened(false)}>
           <Menu />
         </Drawer>
       </MenuContainer>
       <LogoContainer>
-        <Link to="/"><LogoImg src={logoImg} /></Link>
+        <Link to="/"><Logo src={LogoImg} /></Link>
       </LogoContainer>
       <ButtonContainer>
         <LogOutButton onClick={handleLogout}>
@@ -71,7 +70,7 @@ const LogoContainer = styled.div`
   margin-left: auto;
 `;
 
-const LogoImg = styled.img`
+const Logo = styled.img`
   width: 100px;
   height: 100px;
 `;

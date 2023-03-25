@@ -1,19 +1,18 @@
 import { useRef, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import { AuthContext } from "../../../common/context/AuthContext";
 import { HOST_DOMAIN } from "../../../common/constant/constants";
 import Header from "../../components/blocks/header/Header";
 
 
+// ユーザー情報設定
 function AccountSetUp() {
+  const { user, postServer } = useContext(AuthContext);
   const [ selectedSex, setSelectedSex ] = useState();
   const [ recommendItem, setRecommendItem ] = useState([]);
-  const recommendItemJson = JSON.stringify(recommendItem);
   const userNameRef = useRef(null);
   const birthDayRef = useRef(null);
-
-  const { user } = useContext(AuthContext);
-  console.log(user);
   const navigate = useNavigate();
 
   const onChangeSexValue = (e) => {
@@ -33,27 +32,14 @@ function AccountSetUp() {
     const email = user.email;
     const userName = userNameRef.current.value;
     const birthDay = birthDayRef.current.value;
+    // DBでは、レコメンドジャンルを配列で保存するために変換
+    const recommendItemJson = JSON.stringify(recommendItem);
 
-    const postParameter = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        email,
-        userName,
-        birthDay,
-        selectedSex,
-        recommendItemJson
-      })
-    };
-
-    fetch(HOST_DOMAIN + "/user-info", postParameter)
+    // DBにPOST情報を送信
+    fetch(HOST_DOMAIN + "/user-info", postServer(email, userName, birthDay, selectedSex, recommendItemJson))
       .then((result) => {
         if (result.status === 200) {
           navigate("/");
-        } else {
-          console.log("予期しないエラーが発生しました。");
         };
       });
   };
@@ -61,114 +47,111 @@ function AccountSetUp() {
   return (
     <>
       <Header />
-      <div>
-      <h1>アカウント情報登録</h1>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="userName">ユーザ名</label>
-            <input
+      <FormContainer>
+        <PageTitle>アカウント情報登録</PageTitle>
+        <AccountInfoForm onSubmit={handleSubmit}>
+          <UserNameDiv>
+            <InfoLabel htmlFor="userName">ユーザ名</InfoLabel>
+            <Input
               type="text"
-              id="userName"
-              name="userName"
               placeholder="username"
               required="required"
               ref={userNameRef}
             />
-          </div>
-          <div>
-            <label htmlFor="sex">性別</label>
-            <input
+          </UserNameDiv>
+          <SexDiv>
+            <InfoLabel htmlFor="sex">性別</InfoLabel>
+            <Input
               type="radio"
-              id="male"
-              name="sex"
               value="male"
               required="required"
               onChange={onChangeSexValue}
             />男
-            <input
+            <Input
               type="radio"
-              id="female"
-              name="sex"
               required="required"
               value="female"
               onChange={onChangeSexValue}
             />女
-          </div>
-          <div>
-            <label htmlFor="birthDay">誕生日</label>
-            <input
+          </SexDiv>
+          <BirthDayDiv>
+            <InfoLabel htmlFor="birthDay">誕生日</InfoLabel>
+            <Input
               type="date"
-              id="birthDay"
-              name="birthDay"
               required="required"
               ref={birthDayRef}
             />
-          </div>
-          <div>
-            <label htmlFor="recommendItem">気になるカテゴリー</label>
-            <input
+          </BirthDayDiv>
+          <CategoryDiv>
+            <InfoLabel htmlFor="recommendItem">気になるカテゴリー</InfoLabel>
+            <Input
               type="checkbox"
-              className="recommendItem"
-              name="recommendItem"
               value="fashion"
               onChange={handleSelectItem}
               checked={recommendItem.includes("fashion")}
             />ファッション
-            <input
+            <Input
               type="checkbox"
-              className="recommendItem"
-              name="recommendItem"
               value="food-drink"
               onChange={handleSelectItem}
               checked={recommendItem.includes("food-drink")}
             />グルメ・飲料
-            <input
+            <Input
               type="checkbox"
-              className="recommendItem"
-              name="recommendItem"
               value="dailyNecessities-healthCare"
               onChange={handleSelectItem}
               checked={recommendItem.includes("dailyNecessities-healthCare")}
             />日用品・ヘルスケア
-            <input
+            <Input
               type="checkbox"
-              className="recommendItem"
-              name="recommendItem"
               value="cosmetics-hairCare"
               onChange={handleSelectItem}
               checked={recommendItem.includes("cosmetics-hairCare")}
             />コスメ・ヘアケア
-            <input
+            <Input
               type="checkbox"
-              className="recommendItem"
-              name="recommendItem"
               value="baby-kids"
               onChange={handleSelectItem}
               checked={recommendItem.includes("baby-kids")}
             />ベビー・キッズ
-            <input
+            <Input
               type="checkbox"
-              className="recommendItem"
-              name="recommendItem"
               value="electronics"
               onChange={handleSelectItem}
               checked={recommendItem.includes("electronics")}
             />家電
-            <input
+            <Input
               type="checkbox"
-              className="recommendItem"
-              name="recommendItem"
               value="sports-outdoor"
               onChange={handleSelectItem}
               checked={recommendItem.includes("sports-outdoor")}
             />スポーツ・アウトドア
-          </div>
-          <input type="submit" value="登録してホーム画面へ"/>
-        </form>
-      </div>
+          </CategoryDiv>
+          <Input type="submit" value="登録してホーム画面へ"/>
+        </AccountInfoForm>
+      </FormContainer>
     </>
   );
 };
+
+
+const FormContainer = styled.div``;
+
+const PageTitle = styled.h1``;
+
+const InfoLabel = styled.label``;
+
+const UserNameDiv = styled.div``;
+
+const SexDiv = styled.div``;
+
+const BirthDayDiv = styled.div``;
+
+const CategoryDiv = styled.div``;
+
+const AccountInfoForm = styled.form``;
+
+const Input = styled.input``;
 
 
 export default AccountSetUp;

@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 
 function ItemDetailInformation(props) {
+  // ItemInfoからアイテム情報を受け取る。
   const { itemName, brand, itemInfo, itemCategory } = props;
 
   return (

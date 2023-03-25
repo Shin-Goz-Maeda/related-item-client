@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 
 function ItemImg(props) {
+  // ItemInfoからアイテム画像のURLを受け取る。
   const { itemImgUrl } = props;
 
   return (

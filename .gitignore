@@ -7,5 +7,11 @@
 # misc
 .DS_Store
 
+# general
 npm-debug.log*
 .env
+
+# firebase
+.firebase
+.firebaserc
+firebase.json

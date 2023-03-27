@@ -20,15 +20,13 @@ function SignUp() {
     event.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    const createdAt = Date.now();
-    const updatedAt = Date.now();
 
     // POST情報を送信
-    await fetch(HOST_DOMAIN + "/signup-mail", postServer(email, password, createdAt, updatedAt))
+    await fetch(HOST_DOMAIN + "/signup-mail", postServer(email, password))
       .then((response) => response.json())
       .then((result) => {
         if (result === 2) {
-          // Google認証を使って登録しているユーザーor既にメール認証で登録済のユーザーに対してブラウザにエラーを表示。
+          // Google認証を使って登録しているユーザーor既にメール認証で登録済のユーザーに対してブラウザにエラーを表示（すでに登録しているユーザーの場合は2を受け取る）。
           setError("このアドレスは登録されています。");
         }
         else if (result.user.emailVerified) {
@@ -56,13 +54,12 @@ function SignUp() {
     // firebaseのサインインメソッド
     signInWithPopup(auth, googleProvider)
       .then((result) => {
-        const provider = result.providerId;
         const email = result.user.email;
         const uuid = result.user.uid;
-        const createdAt = result.user.metadata.createdAt;
+        const provider = result.providerId;
 
         // POST情報を送信
-        fetch(HOST_DOMAIN + "/signup-google", postServer(provider, email, uuid, createdAt));
+        fetch(HOST_DOMAIN + "/signup-google", postServer(email, "",uuid, provider));
         userLoggedInState(true, result.user);
 
         // 初回ログインユーザー

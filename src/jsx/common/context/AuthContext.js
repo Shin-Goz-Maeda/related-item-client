@@ -15,18 +15,20 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     setLoading(false);
     onAuthStateChanged(auth, (user) => {
+      console.log(user);
       setLoading(true);
       setUser(user);
     });
   }, []);
 
   // ユーザ情報とログイン状態
-  const userLoggedInState = (user, signIn) => {
+  const userLoggedInState = (signIn, user) => {
     setSignInCheck(signIn);
     setUser(user);
   };
 
-  const postServer = (a, b, c, d, e) => {
+  //　サーバーへのPOST情報
+  const postServer = (email, password, uuid, provider) => {
     // POST情報を設定
     const postParameter = {
       method: "POST",
@@ -34,11 +36,10 @@ export function AuthProvider({ children }) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        a,
-        b,
-        c,
-        d,
-        e
+        email,
+        password,
+        uuid,
+        provider,
       })
     };
     return postParameter;
@@ -76,9 +77,6 @@ export function AuthProvider({ children }) {
   // 共有する値
   const value = {
     user,
-    setUser,
-    signInCheck,
-    setSignInCheck,
     postServer,
     catchError,
     actionSetting,

@@ -50,23 +50,23 @@ function Item() {
   // インスタの受け込みコードがあるのかを判定
   const showInstagramPost = () => {
     if (item[0].instagram_embed_code === null) {
-      const a = <InstagramImg instagramPost="該当するデータがありません。" />;
-      return a;
+      const NothingInstagramImg = <InstagramImg instagramPost="該当するデータがありません。" />;
+      return NothingInstagramImg;
     } else {
-      const b = item.map((value, key) =>
+      const InstagramImg = item.map((value, key) =>
         <InstagramImg
           key={key}
           instagramPost={value.instagram_embed_code}
         />
       );
-      return b;
+      return InstagramImg;
     };
   };
 
   // インスタグラムの埋め込みコードのロード状態を受け渡す。
   const LoadingPost = () => {
-    const c = <InstagramImg loaded={loaded} />;
-    return c;
+    const LoadImg = <InstagramImg loaded={loaded} />;
+    return LoadImg;
   };
 
   return (

@@ -8,7 +8,7 @@ import Header from "../../components/blocks/header/Header";
 
 // ユーザー情報設定
 function AccountSetUp() {
-  const { user, postServer } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [ selectedSex, setSelectedSex ] = useState();
   const [ recommendItem, setRecommendItem ] = useState([]);
   const userNameRef = useRef(null);
@@ -35,8 +35,23 @@ function AccountSetUp() {
     // DBでは、レコメンドジャンルを配列で保存するために変換
     const recommendItemJson = JSON.stringify(recommendItem);
 
+    // POST情報を設定
+    const postParameter = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email,
+        userName,
+        birthDay,
+        selectedSex,
+        recommendItemJson
+      })
+    };
+
     // DBにPOST情報を送信
-    fetch(HOST_DOMAIN + "/user-info", postServer(email, userName, birthDay, selectedSex, recommendItemJson))
+    fetch(HOST_DOMAIN + "/user-info", postParameter)
       .then((result) => {
         if (result.status === 200) {
           navigate("/");

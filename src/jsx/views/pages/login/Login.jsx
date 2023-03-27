@@ -16,7 +16,7 @@ function Login() {
   const navigate = useNavigate();
 
   // メールアドレス認証を使ったログイン
-  const handleSubmit = async (event) => {
+  const handleMailLogIn = async (event) => {
     event.preventDefault();
     // フォームに入力した内容を取得
     const email = emailRef.current.value;
@@ -27,18 +27,8 @@ function Login() {
     .then((response) => response.json())
     .then((result) => {
       // メール認証が完了しているかを判定
-      if (result.status !== 401) {
-        // メール認証が完了している場合
-        if (result.code === "auth/wrong-password") {
-          // Googleアカウントで登録していたが、メールアドレスで再ログインした場合のエラー表示
-          setError("メールアドレスかログイン方法に誤りがあります。");
-          return;
-
-        } else if (result.code === "auth/user-not-found") {
-          // アカウント登録を行っていないエラー表示
-          setError("メールアドレスが登録されていません。");
-          return;
-        };
+      if (result.user.emailVerified) {
+        // メール認証が完了している場
         userLoggedInState(true, result.user);
 
         // POST情報を送信
@@ -65,17 +55,16 @@ function Login() {
   };
 
   // Google認証を使ったログイン
-  const handleGoogleSignIn = () => {
+  const handleGoogleLogIn = () => {
     // firebase ログインメソッド
     signInWithPopup(auth, googleProvider)
       .then((result) => {
-        const provider = result.providerId;
         const email = result.user.email;
         const uuid = result.user.uid;
-        const createdAt = result.user.metadata.createdAt;
+        const provider = result.providerId;
 
         // POST情報を送信
-        fetch(HOST_DOMAIN + "/login-google", postServer(provider, email, uuid, createdAt));
+        fetch(HOST_DOMAIN + "/login-google", postServer(email, "", uuid, provider));
         userLoggedInState(true, result.user);
 
         // 初回ログインユーザー
@@ -95,7 +84,7 @@ function Login() {
   return (
     <LoginContainer>
       <PageTitle>ログイン</PageTitle>
-      <LoginForm onSubmit={handleSubmit}>
+      <LoginForm onSubmit={handleMailLogIn}>
       {error && <p style={{ color: "red" }}>{error}</p>}
         <EmailDiv>
           <label htmlFor="email">メールアドレス</label>
@@ -116,7 +105,7 @@ function Login() {
         <SubmitButton>ログイン</SubmitButton>
       </LoginForm>
       <Line>----------------------</Line>
-      <GoogleAuthDiv onClick={handleGoogleSignIn}>
+      <GoogleAuthDiv onClick={handleGoogleLogIn}>
         <GoogleAuthButton>Googleアカウントでログイン</GoogleAuthButton>
       </GoogleAuthDiv>
       <AccountRegisterDiv>
@@ -148,7 +137,7 @@ const GoogleAuthDiv = styled.div``;
 
 const AccountRegisterDiv = styled.div``;
 
-const PasswordResetDiv = styled.div;
+const PasswordResetDiv = styled.div``;
 
 
 export default Login;

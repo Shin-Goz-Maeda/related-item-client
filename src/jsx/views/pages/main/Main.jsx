@@ -8,17 +8,42 @@ import ItemContainer from "../../components/blocks/mainPageItemContainer/ItemCon
 
 function Main() {
   const [ items, setItems ] = useState();
+  const [ loading, setLoading ] = useState();
 
    // DBからアイテム情報をすべて取得
    useEffect(() => {
+    setLoading(false);
     fetch(HOST_DOMAIN + "/getImage")
       .then((response) => {
         response.json()
         .then((data) => {
           setItems(data);
+          setLoading(true);
         });
       });
   }, []);
+
+  const itemsDisplay = () => {
+    const itemsDisplayMainPage = items.map((value, index) => {
+      return (
+        <Link to={`item/${value.id}`} key={index}>
+          <ItemContainer
+            itemId={value.id}
+            itemName={value.item_name}
+            brand={value.brand}
+            itemCategory={value.item_category}
+            itemUrl={value.item_img_url}
+          />
+        </Link>
+      );
+    });
+    return itemsDisplayMainPage;
+  };
+
+  const LoadItems = () => {
+    const loadingItems = <div>ロード中</div>;
+    return loadingItems;
+  };
 
   // 取得したアイテム情報を個別に表示
   return (
@@ -26,20 +51,9 @@ function Main() {
       <Header />
       <Container>
         <ItemSpace>
-          {/* TODO:undefinedを変更する */}
-        {typeof items !== "undefined" && items.map((value, index) => {
-          return (
-            <Link to={`item/${value.id}`} key={index}>
-              <ItemContainer
-                itemId={value.id}
-                itemName={value.item_name}
-                brand={value.brand}
-                itemCategory={value.item_category}
-                itemUrl={value.item_img_url}
-              />
-            </Link>
-          );
-        })}
+          {loading ?
+            itemsDisplay() : LoadItems()
+          }
         </ItemSpace>
       </Container>
     </>

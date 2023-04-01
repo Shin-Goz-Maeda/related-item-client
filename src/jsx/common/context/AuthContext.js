@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/firebase";
+import { HOST_DOMAIN } from "../constant/constants";
 
 
 export const AuthContext = createContext();
@@ -10,16 +11,6 @@ export function AuthProvider({ children }) {
   const [ user, setUser ] = useState("");
   const [ signInCheck, setSignInCheck ] = useState(false);
   const [ loading, setLoading ] = useState(false);
-
-  // 現在ログインしているユーザー情報を取得
-  useEffect(() => {
-    setLoading(false);
-    onAuthStateChanged(auth, (user) => {
-      console.log(user);
-      setLoading(true);
-      setUser(user);
-    });
-  }, []);
 
   // ユーザ情報とログイン状態
   const userLoggedInState = (signIn, user) => {
@@ -68,11 +59,21 @@ export function AuthProvider({ children }) {
     // パスワード再設定メールからパスワードを再設定後にどこへアクセスするかを指定
     const actionCodeSettings = {
       //パスワード再設定後のリダイレクトURL
-      url: "http://localhost:3000" + url,
+      url: HOST_DOMAIN + url,
       handleCodeInApp: false
     };
     return actionCodeSettings;
-  }
+  };
+
+  // 現在ログインしているユーザー情報を取得
+  useEffect(() => {
+    setLoading(false);
+    fetch(HOST_DOMAIN + "/onuser")
+     .then((result) => {
+        setLoading(true);
+        setUser(result);
+     });
+  }, []);
 
   // 共有する値
   const value = {

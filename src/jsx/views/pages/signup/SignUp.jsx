@@ -25,18 +25,16 @@ function SignUp() {
     await fetch(HOST_DOMAIN + "/signup-mail", postServer(email, password))
       .then((response) => response.json())
       .then((result) => {
-        if (result === 2) {
+        if (result === 1) {
           // Google認証を使って登録しているユーザーor既にメール認証で登録済のユーザーに対してブラウザにエラーを表示（すでに登録しているユーザーの場合は2を受け取る）。
           setError("このアドレスは登録されています。");
-        }
-        else if (result.user.emailVerified) {
+        } else if (result.user.emailVerified) {
           // 一度退会していてメール認証が完了しているユーザーは、アカウントセットアップページへ移動。
           if (result.user) {
             userLoggedInState(true, result.user);
             navigate("/accountsetup");
           };
-        }
-        else {
+        } else {
           if (result.user) {
             // 初回登録のユーザーはメール認証を案内。
             userLoggedInState(true, result.user);

@@ -60,10 +60,11 @@ const HeaderContainer = styled.div`
 `;
 
 const MenuContainer = styled.div`
-display: flex;
-position: absolute;
-top: 35%;
-left: 2%;`;
+  display: flex;
+  position: absolute;
+  top: 35%;
+  left: 2%;`
+;
 
 const LogoContainer = styled.div`
   margin-right: auto;

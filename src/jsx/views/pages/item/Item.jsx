@@ -21,11 +21,31 @@ function Item() {
       .then((response) => {
         response.json()
         .then((data) => {
-          setItem(data);
           setLoaded(true);
-          });
-      });
+          setItem(data);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }, [id]);
+
+  // インスタの受け込みコードがあるのかを判定
+  const showItem = () => {
+    if (item.length === 0) {
+      const NothingItem = <ItemInfo itemData="該当するデータがありません。"/>;
+      return NothingItem;
+    } else {
+      const ItemData = <ItemInfo
+        itemName={item[0].item_name}
+        brand={item[0].brand}
+        itemCategory={item[0].item_category}
+        itemImgUrl={item[0].item_img_url}
+        itemInfo={item[0].item_info}
+      />;
+      return ItemData;
+    };
+  };
 
   useEffect(() => {
     // 投稿の描画が終わったらスクリプトを読みこませる。
@@ -49,17 +69,17 @@ function Item() {
 
   // インスタの受け込みコードがあるのかを判定
   const showInstagramPost = () => {
-    if (item[0].instagram_embed_code === null) {
+    if (item.length !== 0) {
       const NothingInstagramImg = <InstagramImg instagramPost="該当するデータがありません。" />;
       return NothingInstagramImg;
     } else {
-      const InstagramImg = item.map((value, key) =>
+      const InstagramImgs = item.map((value, key) =>
         <InstagramImg
           key={key}
           instagramPost={value.instagram_embed_code}
         />
       );
-      return InstagramImg;
+      return InstagramImgs;
     };
   };
 
@@ -76,13 +96,7 @@ function Item() {
         <ItemDisplay>
           <SelectItem>
             {loaded ?
-              <ItemInfo
-                  itemName={item[0].item_name}
-                  brand={item[0].brand}
-                  itemCategory={item[0].item_category}
-                  itemImgUrl={item[0].item_img_url}
-                  itemInfo={item[0].item_info}
-              /> :
+              showItem() :
               <ItemInfo loaded={loaded} />
             }
           </SelectItem>

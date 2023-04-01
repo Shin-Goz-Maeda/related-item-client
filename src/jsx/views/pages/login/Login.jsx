@@ -27,7 +27,7 @@ function Login() {
     .then((response) => response.json())
     .then((result) => {
       // メール認証が完了しているかを判定
-      if (result.user.emailVerified) {
+      if (result !== 1) {
         // メール認証が完了している場
         userLoggedInState(true, result.user);
 

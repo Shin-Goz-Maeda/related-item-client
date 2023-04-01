@@ -8,10 +8,11 @@ import Item from "../views/pages/item/Item";
 import Login  from "../views/pages/login/Login";
 import PwReset from "../views/pages/pwreset/PwReset";
 import SignUp from "../views/pages/signup/SignUp";
-import MailAuth from "../views/pages/MailAuth/MailAuth";
-import AccountSetUp from "../views/pages/AccountSetUp/AccountSetUp";
+import MailAuth from "../views/pages/mailAuth/MailAuth";
+import AccountSetUp from "../views/pages/acountSetUp/AccountSetUp";
 import WithdrawalComplete from "../views/pages/withdrawal/WithdrawalComplete";
 import WithdrawalConfirmation from "../views/pages/withdrawal/WithdrawalConfirmation";
+import NotFound from "../views/pages/notFound/Notfound";
 
 
 // ルーティング処理
@@ -80,6 +81,11 @@ function RouterConfig() {
             path="pwreset"
             element={
               <PwReset />
+            }
+          />
+          <Route
+            path="*"
+            element={<NotFound />
             }
           />
         </Routes>

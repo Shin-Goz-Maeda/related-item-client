@@ -1,123 +1,143 @@
-import { useRef, useState, useContext, useEffect } from 'react'
+import { useRef, useState, useContext } from "react"
 import { Link, useNavigate } from "react-router-dom";
-import { signInWithPopup, onAuthStateChanged} from "firebase/auth";
-import { HOST_DOMAIN } from '../../../common/constant/constants';
+import styled from "styled-components";
 import { AuthContext } from "../../../common/context/AuthContext";
-import { GoogleAuthButton } from "../../components/atoms/Button";
+import { signInWithPopup, getAdditionalUserInfo } from "firebase/auth";
 import { auth, googleProvider } from "../../../common/firebase/firebase";
+import { HOST_DOMAIN } from "../../../common/constant/constants";
+import { GoogleAuthButton } from "../../components/atoms/Button";
+
 
 function Login() {
-  const { setUser, setSignInCheck } = useContext(AuthContext);
+  const { postServer, catchError, userLoggedInState } = useContext(AuthContext);
+  const [ error, setError ] = useState();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
-  const [ error, setError ] = useState();
   const navigate = useNavigate();
 
-    // サブミット時の処理
-  const handleSubmit = async (event) => {
+  // メールアドレス認証を使ったログイン
+  const handleMailLogIn = async (event) => {
     event.preventDefault();
+    // フォームに入力した内容を取得
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    const postParameter = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email,
-        password
-      })
-    }
-    await fetch(HOST_DOMAIN + "/login", postParameter)
+
+    // POST情報を送信
+    await fetch(HOST_DOMAIN + "/login-mail", postServer(email, password))
     .then((response) => response.json())
     .then((result) => {
-      if (result != 1) {
-        setSignInCheck(true);
-        setUser(result.user)
-        console.log(result.user)
-        if(result.user) {
-          navigate("/")
-        }
+      // メール認証が完了しているかを判定
+      if (result !== 1) {
+        // メール認証が完了している場
+        userLoggedInState(true, result.user);
+
+        // POST情報を送信
+        fetch(HOST_DOMAIN + "/login-first", postServer(email))
+        .then((result) => {
+          // 初回ログインかを判定
+          if (result.status === 200) {
+            // 初回ログイン場合
+            navigate("/accountsetup");
+          } else {
+            // 2回目以降のログインの場合
+            navigate("/");
+          };
+        });
       } else {
+        // メール認証が完了していない場合
         setError("メールアドレス認証を完了してください。");
-      }
+      };
     })
+    // POST情報を送信してエラーが発生した場合
     .catch((error) => {
-      switch (error.code) {
-        case "auth/invalid-email":
-          setError("正しいメールアドレスの形式で入力してください。");
-          break;
-        case "auth/user-not-found":
-          setError("メールアドレスかパスワードに誤りがあります。");
-          break;
-        case "auth/wrong-password":
-          setError("メールアドレスかパスワードに誤りがあります。");
-          break;
-        default:
-          setError("メールアドレスかパスワードに誤りがあります。");
-          break;
-      }
+      setError(catchError(error));
     });
   };
 
-  const handleGoogleSignIn = () => {
+  // Google認証を使ったログイン
+  const handleGoogleLogIn = () => {
+    // firebase ログインメソッド
     signInWithPopup(auth, googleProvider)
-    .then((result) => {
-      setSignInCheck(true);
-      setUser(result.user);
-      navigate("/")
-    })
-    .catch((error) => {
-      console.log(error.message)
-    })
+      .then((result) => {
+        const email = result.user.email;
+        const uuid = result.user.uid;
+        const provider = result.providerId;
+
+        // POST情報を送信
+        fetch(HOST_DOMAIN + "/login-google", postServer(email, "", uuid, provider));
+        userLoggedInState(true, result.user);
+
+        // 初回ログインユーザー
+        const isNewUser = getAdditionalUserInfo(result)?.isNewUser;
+        // 初回ログインユーザーかを判定
+        if (isNewUser) {
+          navigate("/accountsetup");
+        } else {
+          navigate("/");
+        };
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log("ユーザ内")
-      }
-      console.log("レンダリング後")
-    })
-  }, [])
-
   return (
-    <div>
-      <h1>ログイン</h1>
-      <form onSubmit={handleSubmit}>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-        <div>
+    <LoginContainer>
+      <PageTitle>ログイン</PageTitle>
+      <LoginForm onSubmit={handleMailLogIn}>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+        <EmailDiv>
           <label htmlFor="email">メールアドレス</label>
           <input
             type="email"
-            id='email'
-            name='email'
-            placeholder='email'
+            placeholder="email"
             ref={emailRef}
           />
-        </div>
-        <div>
+        </EmailDiv>
+        <PasswordDiv>
           <label htmlFor="password">パスワード</label>
           <input
             type="password"
-            id='password'
-            name='password'
-            placeholder='password'
+            placeholder="password"
             ref={passwordRef}
           />
-        </div>
-        <button>ログイン</button>
-      </form>
-      <div>----------------------</div>
-      <div onClick={handleGoogleSignIn}>
+        </PasswordDiv>
+        <SubmitButton>ログイン</SubmitButton>
+      </LoginForm>
+      <Line>----------------------</Line>
+      <GoogleAuthDiv onClick={handleGoogleLogIn}>
         <GoogleAuthButton>Googleアカウントでログイン</GoogleAuthButton>
-      </div>
-      <div>
+      </GoogleAuthDiv>
+      <AccountRegisterDiv>
         ユーザ登録は<Link to="/signup">こちら</Link>から
-      </div>
-      <div>パスワードを忘れた方は<Link to="/pwreset">こちら</Link>をクリック</div>
-    </div>
-  )
-}
+      </AccountRegisterDiv>
+      <PasswordResetDiv>
+        パスワードを忘れた方は<Link to="/pwreset">こちら</Link>をクリック
+      </PasswordResetDiv>
+    </LoginContainer>
+  );
+};
+
+
+const LoginContainer = styled.div``;
+
+const PageTitle = styled.h1``;
+
+const LoginForm = styled.form``;
+
+const EmailDiv = styled.div``;
+
+const PasswordDiv = styled.div``;
+
+const Line = styled.div``;
+
+const SubmitButton = styled.button``;
+
+const GoogleAuthDiv = styled.div``;
+
+const AccountRegisterDiv = styled.div``;
+
+const PasswordResetDiv = styled.div``;
+
 
 export default Login;

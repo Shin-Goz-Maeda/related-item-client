@@ -1,23 +1,25 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { AuthProvider } from "../common/context/AuthContext";
+import PrivateRoute from "./PrivateRoute";
 
 // 各ページをインポート
-import Main from '../views/pages/main/Main';
-import Item from '../views/pages/item/Item';
-import Login  from '../views/pages/login/Login';
-import PwReconfiguration from '../views/pages/pwreset/PwReconfiguration';
-import PwReset from '../views/pages/pwreset/PwReset';
-import PwReconfigurationComplete from '../views/pages/pwreset/ReConfigurationComplete';
-import Search from '../views/pages/search/Search';
-import SignUp from '../views/pages/signup/SignUp';
-import WithdrawalComplete from '../views/pages/withdrawal/WithdrawalComplete';
-import WithdrawalConfirmation from '../views/pages/withdrawal/WithdrawalConfirmation';
-import PrivateRoute from './PrivateRoute';
-import { AuthProvider } from "../common/context/AuthContext";
+import Main from "../views/pages/main/Main";
+import Item from "../views/pages/item/Item";
+import Login  from "../views/pages/login/Login";
+import PwReset from "../views/pages/pwreset/PwReset";
+import SignUp from "../views/pages/signup/SignUp";
+import MailAuth from "../views/pages/mailAuth/MailAuth";
+import AccountSetUp from "../views/pages/acountSetUp/AccountSetUp";
+import WithdrawalComplete from "../views/pages/withdrawal/WithdrawalComplete";
+import WithdrawalConfirmation from "../views/pages/withdrawal/WithdrawalConfirmation";
+import NotFound from "../views/pages/notFound/Notfound";
 
-const RouterConfig =() => {
 
+// ルーティング処理
+function RouterConfig() {
+  // <PrivateRoute>で囲っている箇所は、ログイン後のみアクセス可能
+  // ログイン前にアクセスした場合は、ログイン画面へリダイレクトする。
   return (
-    <>
     <AuthProvider>
       <BrowserRouter>
         <Routes>
@@ -38,19 +40,9 @@ const RouterConfig =() => {
             }
           />
           <Route
-            path="search"
-            element={
-              <PrivateRoute>
-                <Search />
-              </PrivateRoute>
-            }
-          />
-          <Route
             path="withdrawalcomplete"
             element={
-              <PrivateRoute>
-                <WithdrawalComplete />
-              </PrivateRoute>
+              <WithdrawalComplete />
             }
           />
           <Route
@@ -59,6 +51,12 @@ const RouterConfig =() => {
               <PrivateRoute>
                 <WithdrawalConfirmation />
               </PrivateRoute>
+            }
+          />
+          <Route
+            path="accountsetup"
+            element={
+              <AccountSetUp />
             }
           />
           <Route
@@ -74,28 +72,27 @@ const RouterConfig =() => {
             }
           />
           <Route
+            path="mailauth"
+            element={
+              <MailAuth />
+            }
+          />
+          <Route
             path="pwreset"
             element={
               <PwReset />
             }
           />
           <Route
-            path="pwreconfiguration"
-            element={
-              <PwReconfiguration />
-            }
-          />
-          <Route
-            path="pwreconfigurationcomplete"
-            element={
-              <PwReconfigurationComplete />
+            path="*"
+            element={<NotFound />
             }
           />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
-    </>
   );
-}
+};
+
 
 export default RouterConfig;

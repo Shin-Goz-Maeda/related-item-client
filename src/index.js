@@ -4,6 +4,8 @@ import './index.css';
 import RouterConfig from './jsx/routes/Route';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+// ルーティングを設定
 root.render(
   <React.StrictMode>
     <RouterConfig />

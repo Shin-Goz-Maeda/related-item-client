@@ -1,60 +1,65 @@
-import Header from '../header/Header';
-import Menu from '../../components/blocks/menu/Menu';
-import { HOST_DOMAIN } from '../../../common/constant/constants';
-import ItemContainer from '../../components/blocks/mainItemContainer/ItemContainer';
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import styled from 'styled-components';
-import { useState, useEffect } from 'react';
+import styled from "styled-components";
+import { HOST_DOMAIN } from "../../../common/constant/constants";
+import Header from "../../components/blocks/header/Header";
+import ItemContainer from "../../components/blocks/mainPageItemContainer/ItemContainer";
 
-const Main = () => {
+
+function Main() {
   const [ items, setItems ] = useState();
-  const [ isShowMenu, setIsShowMenu ] = useState(false);
+  const [ loading, setLoading ] = useState();
 
-  const handleMenu = () => {
-    setIsShowMenu(!isShowMenu);
-  };
-
-  const menuDisplay = () => {
-    if (isShowMenu) {
-      return <Menu />;
-    }
-  };
-
-  // DBからアイテム情報をすべて取得
-  useEffect(() => {
+   // DBからアイテム情報をすべて取得
+   useEffect(() => {
+    setLoading(false);
     fetch(HOST_DOMAIN + "/getImage")
       .then((response) => {
         response.json()
-      .then((data) => {
-        setItems(data)
+        .then((data) => {
+          setItems(data);
+          setLoading(true);
+        });
       });
-    });
   }, []);
 
+  const itemsDisplay = () => {
+    const itemsDisplayMainPage = items.map((value, index) => {
+      return (
+        <Link to={`item/${value.id}`} key={index}>
+          <ItemContainer
+            itemId={value.id}
+            itemName={value.item_name}
+            brand={value.brand}
+            itemCategory={value.item_category}
+            itemUrl={value.item_img_url}
+          />
+        </Link>
+      );
+    });
+    return itemsDisplayMainPage;
+  };
+
+  const LoadItems = () => {
+    const loadingItems = <LoadPage>ロード中</LoadPage>;
+    return loadingItems;
+  };
+
+  // 取得したアイテム情報を個別に表示
   return (
     <>
-      <Header onClick={handleMenu} />
-      <Container id='container'>
-        { menuDisplay() }
+      <Header />
+      <Container>
         <ItemSpace>
-        {typeof items !== "undefined" && items.map((value, index) => {
-          return (
-            <Link to={`item/${value.id}`} key={index}>
-              <ItemContainer
-                itemId={value.id}
-                itemName={value.item_name}
-                brand={value.brand}
-                itemCategory={value.item_category}
-                itemUrl={value.item_img_url}
-              />
-            </Link>
-          );
-        })};
+          {loading ?
+            itemsDisplay() : LoadItems()
+          }
         </ItemSpace>
       </Container>
     </>
   );
-}
+};
+
 
 const Container = styled.div`
   border: 5px solid #000;
@@ -70,5 +75,8 @@ const ItemSpace = styled.div`
   flex-wrap: wrap;
   justify-content: space-around;
 `;
+
+const LoadPage = styled.div``;
+
 
 export default Main;

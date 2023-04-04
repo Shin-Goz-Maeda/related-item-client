@@ -26,6 +26,7 @@ amazonで販売されている商品に関連するインスタ投稿を表示�
 - create-react-app
 
 ### How to dev Start!!
+- 【こちらを参考にnode.jsをインストールしてください。】(https://codelikes.com/mac-node-install/)
 - npx install create-react-app
 - npm install --save styled-components
 - npm install react-router-dom

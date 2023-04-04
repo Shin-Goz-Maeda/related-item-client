@@ -10,6 +10,7 @@
 # general
 npm-debug.log*
 .env
+.env.development
 
 # firebase
 .firebase

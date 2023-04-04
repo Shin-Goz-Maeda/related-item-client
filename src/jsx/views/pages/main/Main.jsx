@@ -41,7 +41,7 @@ function Main() {
   };
 
   const LoadItems = () => {
-    const loadingItems = <div>ロード中</div>;
+    const loadingItems = <LoadPage>ロード中</LoadPage>;
     return loadingItems;
   };
 
@@ -75,6 +75,8 @@ const ItemSpace = styled.div`
   flex-wrap: wrap;
   justify-content: space-around;
 `;
+
+const LoadPage = styled.div``;
 
 
 export default Main;

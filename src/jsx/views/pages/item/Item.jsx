@@ -10,6 +10,7 @@ import InstagramImg from "../../components/blocks/itemPageItemContainer/instagra
 function Item() {
   const [ item, setItem ] = useState();
   const [ loaded, setLoaded ] = useState(false);
+  console.log(item)
 
   // URLからアイテムナンバーを取得
   const { id } = useParams();
@@ -27,7 +28,7 @@ function Item() {
       })
       .catch((err) => {
         console.log(err);
-      })
+      });
   }, [id]);
 
   // インスタの受け込みコードがあるのかを判定
@@ -69,7 +70,7 @@ function Item() {
 
   // インスタの受け込みコードがあるのかを判定
   const showInstagramPost = () => {
-    if (item.length !== 0) {
+    if (item[0].instagram_embed_code === null) {
       const NothingInstagramImg = <InstagramImg instagramPost="該当するデータがありません。" />;
       return NothingInstagramImg;
     } else {

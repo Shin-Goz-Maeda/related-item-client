@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { HOST_DOMAIN } from "../../../common/constant/constants";
+import { HOST_DOMAIN } from "../../../common/constant/Constant";
+import Slide from "../../components/blocks/swiperSlide/Swiper";
 import Header from "../../components/blocks/header/Header";
 import ItemInfo from "../../components/blocks/itemPageItemContainer/itemInfo/ItemInfo";
 import InstagramImg from "../../components/blocks/itemPageItemContainer/instagramInfo/InstagramImg";
+import { pc, lg } from "../../../common/context/ResponsiveMedia";
 
 
 function Item() {
   const [ item, setItem ] = useState();
   const [ loaded, setLoaded ] = useState(false);
-  console.log(item)
 
   // URLからアイテムナンバーを取得
   const { id } = useParams();
@@ -34,7 +35,7 @@ function Item() {
   // インスタの受け込みコードがあるのかを判定
   const showItem = () => {
     if (item.length === 0) {
-      const NothingItem = <ItemInfo itemData="該当するデータがありません。"/>;
+      const NothingItem = <ItemInfo itemData="該当するデータがありません。" />;
       return NothingItem;
     } else {
       const ItemData = <ItemInfo
@@ -74,12 +75,7 @@ function Item() {
       const NothingInstagramImg = <InstagramImg instagramPost="該当するデータがありません。" />;
       return NothingInstagramImg;
     } else {
-      const InstagramImgs = item.map((value, key) =>
-        <InstagramImg
-          key={key}
-          instagramPost={value.instagram_embed_code}
-        />
-      );
+      const InstagramImgs = <Slide instagramPosts={item} />
       return InstagramImgs;
     };
   };
@@ -93,53 +89,59 @@ function Item() {
   return (
     <>
       <Header />
-      <Container>
-        <ItemDisplay>
-          <SelectItem>
+      <ItemContainerDiv>
+        <ItemDisplayDiv>
+          <SelectItemDiv>
             {loaded ?
               showItem() :
               <ItemInfo loaded={loaded} />
             }
-          </SelectItem>
-          <SelectRelateItem>
+          </SelectItemDiv>
+          <SelectRelateItemDiv>
             {loaded ?
-              showInstagramPost() :  LoadingPost()
+              showInstagramPost() : LoadingPost()
             }
-          </SelectRelateItem>
-        </ItemDisplay>
-      </Container>
+          </SelectRelateItemDiv>
+        </ItemDisplayDiv>
+      </ItemContainerDiv>
     </>
   );
 };
 
 
-const Container = styled.div`
-  border: 5px solid #000;
-  height: 1000px;
+const ItemContainerDiv = styled.div`
+  width: 100%;
+  padding: 120px 0px 30px 0px;
+  background-color: #F6F6F6;
+`;
+
+const ItemDisplayDiv = styled.div`
+  width: 100%;
+`;
+
+const SelectItemDiv = styled.div`
+  width: 100%;
+  justify-content: center;
+
+  ${lg`
+    display: flex;
+    height: 400px;
+    margin: 10px;
+  `}
+
+  ${pc`
+    display: flex;
+    height: 400px;
+    margin: 10px;
+  `}
+`;
+
+const SelectRelateItemDiv = styled.div`
   display: flex;
-  justify-content: space-around;
-`;
-
-const ItemDisplay = styled.div`
-  width: 100%;
-  height: auto;
-`;
-
-const SelectItem = styled.div`
-  width: 100%;
-  height: 50%;
-  margin: 0 auto;
-  border: 1px solid blue;
-`;
-
-const SelectRelateItem = styled.div`
-  width: 100%;
-  height: 50%;
-  display: flex;
-  margin: 0 auto;
-  border: 1px solid blue;
-  overflow-x: scroll;
-  overflow-y: hidden;
+  padding: 20px 30px;
+  margin: 20px 30px;
+  background-color: white;
+  border-radius: 10px;
 `;
 
 

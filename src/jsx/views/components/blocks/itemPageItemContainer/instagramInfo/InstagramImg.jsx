@@ -3,23 +3,18 @@ import styled from "styled-components";
 
 function InstagramImg(props) {
   // アイテムページからインスタグラム埋め込みコードと画面のロードステータスを受け取る。
-  const { instagramPost, loaded } = props;
+  const { instagramPost } = props;
 
   return (
-    <>
-      {loaded ?
-        <InstagramImgContainer>ロード中</InstagramImgContainer> :
-        <InstagramImgContainer
-        dangerouslySetInnerHTML={{ __html: instagramPost }}
-        >
-        </InstagramImgContainer>
-      }
-    </>
+    <InstagramImgContainerDiv
+      dangerouslySetInnerHTML={{ __html: instagramPost }}
+    >
+    </InstagramImgContainerDiv>
   );
 };
 
 
-const InstagramImgContainer = styled.div`
+const InstagramImgContainerDiv = styled.div`
   width: 100%;
   height: 100%;
   display: flex;

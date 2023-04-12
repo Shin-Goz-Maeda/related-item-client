@@ -5,7 +5,7 @@ import PrivateRoute from "./PrivateRoute";
 // 各ページをインポート
 import Main from "../views/pages/main/Main";
 import Item from "../views/pages/item/Item";
-import Login  from "../views/pages/login/Login";
+import Login from "../views/pages/login/Login";
 import PwReset from "../views/pages/pwreset/PwReset";
 import SignUp from "../views/pages/signup/SignUp";
 import MailAuth from "../views/pages/mailAuth/MailAuth";

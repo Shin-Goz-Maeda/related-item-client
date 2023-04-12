@@ -1,27 +1,38 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { PageTitleH1 } from "../../components/atoms/PageTitle";
 
 
 // 退会処理が完了したことを案内。
 function WithdrawalComplete() {
   return (
-    <WithdrawalContainer>
-      <WithdrawalP>
+    <WithdrawalContainerDiv>
+      <PageTitleH1>
         退会が完了しました。
-      </WithdrawalP>
+      </PageTitleH1>
       <RegisterDiv>
-        ユーザ再登録は<Link to="/signup">こちら</Link>から
+        <Link
+          to="/signup"
+          style={{
+            color: "#333333",
+            fontWeight: "bold"
+          }}
+        >ユーザ登録はこちら
+        </Link>
       </RegisterDiv>
-    </WithdrawalContainer>
+    </WithdrawalContainerDiv>
   );
 };
 
 
-const WithdrawalContainer = styled.div``;
+const WithdrawalContainerDiv = styled.div`
+  width: 100%;
+  padding-top: 50px;
+`;
 
-const WithdrawalP = styled.h3``;
-
-const RegisterDiv = styled.div``;
+const RegisterDiv = styled.div`
+  text-align: center;
+`;
 
 
 export default WithdrawalComplete;

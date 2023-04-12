@@ -8,23 +8,29 @@ function ItemContainer(props) {
   const { itemName, brand, itemUrl, itemCategory } = props;
 
   return (
-    <ItemsContainer >
+    <ItemsContainerDiv >
       <ItemImage itemUrl={itemUrl} />
       <ItemInfoContainer
         itemName={itemName}
         brand={brand}
         itemCategory={itemCategory}
       />
-    </ItemsContainer>
+    </ItemsContainerDiv>
   );
 };
 
 
-const ItemsContainer = styled.div`
-  width: 300px;
-  height: 350px;
-  margin: 20px;
-  border: 3px solid blue;
+const ItemsContainerDiv = styled.div`
+  display: inline-block;
+  margin: 10px;
+  break-inside: avoid;
+  border: solid 2px #A9A9A9;
+  border-radius: 10px;
+  &:hover {
+    transition: 0.3s ;
+    opacity: 0.75;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
+  };
 `;
 
 

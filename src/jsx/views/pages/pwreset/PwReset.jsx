@@ -5,6 +5,10 @@ import { AuthContext } from "../../../common/context/AuthContext";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../../common/firebase/firebase";
 import Header from "../../components/blocks/header/Header";
+import { PwResetButton } from "../../components/atoms/Button";
+import { BaseForm, BaseLabel, PwResetInput, BaseLineDiv } from "../../components/atoms/Form";
+import { PageTitleH1 } from "../../components/atoms/PageTitle";
+import { sp } from "../../../common/context/ResponsiveMedia";
 
 
 function PwReset() {
@@ -54,56 +58,88 @@ function PwReset() {
       {user ?
         <>
           <Header />
-          <PasswordResetContainer>
-            <PageTitle>パスワードリセット</PageTitle>
-            <ResetForm onSubmit={handleChangePasswordLogged}>
-              {success && <p style={{ color: "blue" }}>{success}</p>}
-              <SubmitButton>再設定メールを送信</SubmitButton>
-            </ResetForm>
-          </PasswordResetContainer>
+          <LoggedPwResetContainerDiv>
+            <PageTitleH1>パスワードリセット</PageTitleH1>
+            <PageInfoP>パスワードのリセットは下記ボタンをクリック後、<br/>ご登録のメールへ再設定メールが送信されます。
+            </PageInfoP>
+            <BaseForm onSubmit={handleChangePasswordLogged}>
+              {success && <p style={{ color: "blue", textAlign: "center" }}>{success}</p>}
+              <PwResetButton>再設定メールを送信</PwResetButton>
+            </BaseForm>
+          </LoggedPwResetContainerDiv>
         </> :
-        <PasswordResetContainer>
-          <PageTitle>パスワードリセット</PageTitle>
-          <ResetForm onSubmit={handleChangePassword}>
-            {success && <p style={{ color: "blue" }}>{success}</p>}
-            <FormDiv>
-              <EmailLabel htmlFor="email">メールアドレス</EmailLabel>
-              <Input
-                type="email"
-                placeholder="email"
-                ref={emailRef}
-              />
-            </FormDiv>
-            <SubmitButton>再設定メールを送信</SubmitButton>
-          </ResetForm>
-          <Line>----------------------</Line>
-          <LoginDiv>
-            ログインは<Link to="/login">こちら</Link>から
-          </LoginDiv>
-        </PasswordResetContainer>
+        <PwResetContainerDiv>
+          <PwResetContainerInnerDiv>
+            <PageTitleH1>パスワードリセット</PageTitleH1>
+            <BaseForm onSubmit={handleChangePassword}>
+              {success && <p style={{ color: "blue", textAlign: "center" }}>{success}</p>}
+              <PwResetFormDiv>
+                <BaseLabel htmlFor="email">メールアドレス</BaseLabel>
+                <PwResetInput
+                  type="email"
+                  placeholder="email"
+                  ref={emailRef}
+                />
+              </PwResetFormDiv>
+              <PwResetButton>再設定メールを送信</PwResetButton>
+            </BaseForm>
+            <BaseLineDiv>または</BaseLineDiv>
+            <LoginDiv>
+              <Link
+                to="/login"
+                style={{
+                  color: "#333333",
+                  fontWeight: "bold"
+                }}
+              >ログインはこちら
+              </Link>
+            </LoginDiv>
+          </PwResetContainerInnerDiv>
+        </PwResetContainerDiv>
       }
     </>
   );
 };
 
 
-const PasswordResetContainer = styled.div``;
+// ログイン前
+const PwResetContainerDiv = styled.div`
+  width: 100%;
+  padding-top: 50px;
+`;
 
-const PageTitle = styled.h1``;
+const PwResetContainerInnerDiv = styled.div`
+  width: 520px;
+  padding: 40px 10px;
+  margin: 0 auto;
+  border: solid 1px #333333;
+  border-radius: 50px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 
-const ResetForm = styled.form``;
+  ${sp`
+    width: 80%;
+  `}
+`;
 
-const SubmitButton = styled.button``;
+const PwResetFormDiv = styled.div``;
 
-const Line = styled.div``;
+const LoginDiv = styled.div`
+  text-align: center;
+`;
 
-const LoginDiv = styled.div``;
+// ログイン後
+const LoggedPwResetContainerDiv = styled.div`
+  width: 100%;
+  padding: 120px 0px 30px 0px;
+`;
 
-const EmailLabel = styled.label``;
+const PageInfoP = styled.p`
+  margin-bottom: 20px;
+  text-align: center;
 
-const FormDiv = styled.div``;
-
-const Input = styled.input``;
-
+  ${sp`
+    padding: 0 50px;
+  `}
+`;
 
 export default PwReset;

@@ -1,8 +1,9 @@
 import { createContext, useState, useEffect } from "react";
-import { HOST_DOMAIN } from "../constant/constants";
+import { HOST_DOMAIN } from "../constant/Constant";
 
 
 export const AuthContext = createContext();
+
 
 // 共有する値を設定
 export function AuthProvider({ children }) {
@@ -28,7 +29,7 @@ export function AuthProvider({ children }) {
         email,
         password,
         uuid,
-        provider,
+        provider
       })
     };
     return postParameter;

@@ -4,16 +4,21 @@ import styled from "styled-components";
 // アカウント登録後に認証メールを送信したことを案内。
 function MailAuth() {
   return (
-    <MessageContainer>
-      <P>登録頂いたメールアドレスへ認証メールを送信しました。</P>
-      <P>メールに記載のリンクをクリックしてメール認証を行ってください。</P>
-    </MessageContainer>
+    <MessageContainerDiv>
+      <PageInfoP>登録頂いたメールアドレスへ認証メールを送信しました。</PageInfoP>
+      <PageInfoP>メールに記載のリンクをクリックしてメール認証を行ってください。</PageInfoP>
+    </MessageContainerDiv>
   );
 };
 
 
-const MessageContainer = styled.div``;
+const MessageContainerDiv = styled.div`
+  width: 100%;
+  padding: 50px 0px 30px 0px;
+`;
 
-const P = styled.p``;
+const PageInfoP = styled.p`
+  text-align: center;
+`;
 
 export default MailAuth;

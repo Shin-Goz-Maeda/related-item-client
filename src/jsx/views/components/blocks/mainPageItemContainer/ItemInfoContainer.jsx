@@ -1,36 +1,49 @@
 import styled from "styled-components";
+import { sp, tb } from "../../../../common/context/ResponsiveMedia";
 
 
 function ItemInfoContainer(props) {
   const { itemName, brand, itemCategory } = props;
 
   return (
-    <ItemInfoContent>
-      <ItemInfoLists>
-        <ItemInfoList>{brand}</ItemInfoList>
-        <ItemInfoList>{itemName}</ItemInfoList>
-        <ItemInfoList>{itemCategory}</ItemInfoList>
-      </ItemInfoLists>
-    </ItemInfoContent>
+    <ItemInfoContentDiv>
+      <ItemInfoListUl>
+        <ItemInfoListLi>{brand}</ItemInfoListLi>
+        <ItemInfoListLi>{itemName}</ItemInfoListLi>
+        <ItemInfoListLi>{itemCategory}</ItemInfoListLi>
+      </ItemInfoListUl>
+    </ItemInfoContentDiv>
   );
 };
 
 
-const ItemInfoContent = styled.div`
-  width: 95%;
+const ItemInfoContentDiv = styled.div`
+  width: 90%;
   height: 30%;
-  border: 2px solid red;
-  margin-bottom: 5px;
-  margin-right: auto;
-  margin-left: auto;
+  padding: 10px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 0 0 10px 10px;
+
+  ${tb`
+    padding: 3px;
+  `}
+
+  ${sp`
+    padding: 3px;
+  `}
 `;
 
-const ItemInfoLists = styled.ul`
-  padding: 0;
-`;
+const ItemInfoListUl = styled.ul``;
 
-const ItemInfoList = styled.li`
+const ItemInfoListLi = styled.li`
   list-style: none;
+  color: #000;
+  font-weight: bold;
+
+  ${sp`
+    font-size: 10px;
+  `}
 `;
 
 

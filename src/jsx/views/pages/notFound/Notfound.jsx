@@ -1,29 +1,35 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { NonPageTitle } from "../../components/atoms/PageTitle";
 
 
 function NotFound() {
   return (
     <>
-      <NotFoundContainer>
-        <PageTitle>404</PageTitle>
-        <PageExplainText>ページが見つかりません。</PageExplainText>
-      </NotFoundContainer>
-      <RedirectContainer>
-        ホームは<Link to="/">こちら</Link>から
-      </RedirectContainer>
+      <NotFoundContainerDiv>
+        <NonPageTitle>404</NonPageTitle>
+        <PageInfoP>ページが見つかりません。</PageInfoP>
+      </NotFoundContainerDiv>
+      <RedirectContainerDiv>
+        <Link to="/">ホームはこちら</Link>
+      </RedirectContainerDiv>
     </>
   );
 };
 
 
-const NotFoundContainer = styled.div``;
+const NotFoundContainerDiv = styled.div`
+  width: 100%;
+  padding: 50px 0px 30px 0px;
+`;
 
-const PageTitle = styled.h2``;
+const PageInfoP = styled.p`
+  text-align: center;
+`;
 
-const PageExplainText = styled.p``;
-
-const RedirectContainer = styled.div``;
+const RedirectContainerDiv = styled.div`
+  text-align: center;
+`;
 
 
 export default NotFound;

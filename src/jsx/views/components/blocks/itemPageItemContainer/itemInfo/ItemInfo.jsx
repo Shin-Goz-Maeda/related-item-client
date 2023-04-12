@@ -1,4 +1,4 @@
-import ItemImg from "../itemInfo/ItemImg"
+import ItemImg from "../itemInfo/ItemImg";
 import ItemDetailInformation from "../itemInfo/ItemDetailInfomation";
 
 

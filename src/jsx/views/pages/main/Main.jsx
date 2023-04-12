@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { HOST_DOMAIN } from "../../../common/constant/constants";
+import { pc, lg } from "../../../common/context/ResponsiveMedia";
+import { HOST_DOMAIN } from "../../../common/constant/Constant";
 import Header from "../../components/blocks/header/Header";
 import ItemContainer from "../../components/blocks/mainPageItemContainer/ItemContainer";
 
@@ -41,7 +42,7 @@ function Main() {
   };
 
   const LoadItems = () => {
-    const loadingItems = <LoadPage>ロード中</LoadPage>;
+    const loadingItems = <LoadPageDiv>ロード中</LoadPageDiv>;
     return loadingItems;
   };
 
@@ -49,34 +50,39 @@ function Main() {
   return (
     <>
       <Header />
-      <Container>
-        <ItemSpace>
+      <MainContainerDiv>
+        <ItemSpaceDiv>
           {loading ?
             itemsDisplay() : LoadItems()
           }
-        </ItemSpace>
-      </Container>
+        </ItemSpaceDiv>
+      </MainContainerDiv>
     </>
   );
 };
 
 
-const Container = styled.div`
-  border: 5px solid #000;
-  height: 1000px;
-  display: flex;
-  justify-content: space-around;
+const MainContainerDiv = styled.div`
+  padding: 120px 20px 30px 20px;
+  background-color: #F6F6F6;
 `;
 
-const ItemSpace = styled.div`
-  height: 1000px;
-  display: flex;
-  overflow-y: scroll;
-  flex-wrap: wrap;
-  justify-content: space-around;
+const ItemSpaceDiv = styled.div`
+  column-gap: 0;
+  column-count: 3;
+
+  ${lg`
+    column-count: 5;
+  `}
+
+  ${pc`
+    column-count: 4;
+  `}
 `;
 
-const LoadPage = styled.div``;
+const LoadPageDiv = styled.div`
+  text-align: center;
+`;
 
 
 export default Main;

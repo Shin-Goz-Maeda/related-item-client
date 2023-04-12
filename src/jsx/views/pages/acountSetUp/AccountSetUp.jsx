@@ -2,8 +2,11 @@ import { useRef, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext } from "../../../common/context/AuthContext";
-import { HOST_DOMAIN } from "../../../common/constant/constants";
+import { HOST_DOMAIN } from "../../../common/constant/Constant";
 import Header from "../../components/blocks/header/Header";
+import { AccountInfoInputButton } from "../../components/atoms/Button";
+import { PageTitleH1 } from "../../components/atoms/PageTitle";
+import { BaseForm, AccountSetUpLabel, AccountSetUpInput, BaseCheckInput, CircleInput } from "../../components/atoms/Form";
 
 
 // ユーザー情報設定
@@ -62,111 +65,162 @@ function AccountSetUp() {
   return (
     <>
       <Header />
-      <FormContainer>
-        <PageTitle>アカウント情報登録</PageTitle>
-        <AccountInfoForm onSubmit={handleSubmit}>
-          <UserNameDiv>
-            <InfoLabel htmlFor="userName">ユーザ名</InfoLabel>
-            <Input
-              type="text"
-              placeholder="username"
-              required="required"
-              ref={userNameRef}
-            />
-          </UserNameDiv>
-          <SexDiv>
-            <InfoLabel htmlFor="sex">性別</InfoLabel>
-            <Input
-              type="radio"
-              value="male"
-              required="required"
-              onChange={onChangeSexValue}
-            />男
-            <Input
-              type="radio"
-              required="required"
-              value="female"
-              onChange={onChangeSexValue}
-            />女
-          </SexDiv>
-          <BirthDayDiv>
-            <InfoLabel htmlFor="birthDay">誕生日</InfoLabel>
-            <Input
-              type="date"
-              required="required"
-              ref={birthDayRef}
-            />
-          </BirthDayDiv>
-          <CategoryDiv>
-            <InfoLabel htmlFor="recommendItem">気になるカテゴリー</InfoLabel>
-            <Input
-              type="checkbox"
-              value="fashion"
-              onChange={handleSelectItem}
-              checked={recommendItem.includes("fashion")}
-            />ファッション
-            <Input
-              type="checkbox"
-              value="food-drink"
-              onChange={handleSelectItem}
-              checked={recommendItem.includes("food-drink")}
-            />グルメ・飲料
-            <Input
-              type="checkbox"
-              value="dailyNecessities-healthCare"
-              onChange={handleSelectItem}
-              checked={recommendItem.includes("dailyNecessities-healthCare")}
-            />日用品・ヘルスケア
-            <Input
-              type="checkbox"
-              value="cosmetics-hairCare"
-              onChange={handleSelectItem}
-              checked={recommendItem.includes("cosmetics-hairCare")}
-            />コスメ・ヘアケア
-            <Input
-              type="checkbox"
-              value="baby-kids"
-              onChange={handleSelectItem}
-              checked={recommendItem.includes("baby-kids")}
-            />ベビー・キッズ
-            <Input
-              type="checkbox"
-              value="electronics"
-              onChange={handleSelectItem}
-              checked={recommendItem.includes("electronics")}
-            />家電
-            <Input
-              type="checkbox"
-              value="sports-outdoor"
-              onChange={handleSelectItem}
-              checked={recommendItem.includes("sports-outdoor")}
-            />スポーツ・アウトドア
-          </CategoryDiv>
-          <Input type="submit" value="登録してホーム画面へ"/>
-        </AccountInfoForm>
-      </FormContainer>
+      <FormContainerDiv>
+        <FormContainerInnerDiv>
+          <BaseForm onSubmit={handleSubmit}>
+            <PageTitleH1>アカウント情報登録</PageTitleH1>
+            <UserNameDiv>
+              <AccountSetUpLabel htmlFor="userName">ユーザ名</AccountSetUpLabel>
+              <AccountSetUpInput
+                type="text"
+                placeholder="username"
+                required="required"
+                ref={userNameRef}
+              />
+            </UserNameDiv>
+            <SexDiv>
+              <AccountSetUpLabel htmlFor="sex">性別</AccountSetUpLabel>
+              <SexLabel>男</SexLabel>
+              <CircleInput
+                name="sex"
+                type="radio"
+                value="male"
+                required="required"
+                onChange={onChangeSexValue}
+              />
+              <SexLabel>女</SexLabel>
+              <CircleInput
+                name="sex"
+                type="radio"
+                required="required"
+                value="female"
+                onChange={onChangeSexValue}
+              />
+            </SexDiv>
+            <BirthDayDiv>
+              <AccountSetUpLabel htmlFor="birthDay">誕生日</AccountSetUpLabel>
+              <AccountSetUpInput
+                type="date"
+                required="required"
+                ref={birthDayRef}
+              />
+            </BirthDayDiv>
+            <CategoriesDiv>
+              <AccountSetUpLabel htmlFor="recommendItem">気になるカテゴリー</AccountSetUpLabel>
+                <CategoryDiv>
+                  <BaseCheckInput
+                    type="checkbox"
+                    value="fashion"
+                    onChange={handleSelectItem}
+                    checked={recommendItem.includes("fashion")}
+                  />
+                  <CategoryNameLabel>ファッション</CategoryNameLabel>
+                </CategoryDiv>
+                <CategoryDiv>
+                  <BaseCheckInput
+                    type="checkbox"
+                    value="food-drink"
+                    onChange={handleSelectItem}
+                    checked={recommendItem.includes("food-drink")}
+                  />
+                  <CategoryNameLabel>グルメ・飲料</CategoryNameLabel>
+                </CategoryDiv>
+                <CategoryDiv>
+                  <BaseCheckInput
+                    type="checkbox"
+                    value="dailyNecessities-healthCare"
+                    onChange={handleSelectItem}
+                    checked={recommendItem.includes("dailyNecessities-healthCare")}
+                  />
+                  <CategoryNameLabel>日用品・ヘルスケア</CategoryNameLabel>
+                </CategoryDiv>
+                <CategoryDiv>
+                  <BaseCheckInput
+                    type="checkbox"
+                    value="cosmetics-hairCare"
+                    onChange={handleSelectItem}
+                    checked={recommendItem.includes("cosmetics-hairCare")}
+                  />
+                  <CategoryNameLabel>コスメ・ヘアケア</CategoryNameLabel>
+                </CategoryDiv>
+                <CategoryDiv>
+                  <BaseCheckInput
+                    type="checkbox"
+                    value="baby-kids"
+                    onChange={handleSelectItem}
+                    checked={recommendItem.includes("baby-kids")}
+                  />
+                  <CategoryNameLabel>ベビー・キッズ</CategoryNameLabel>
+                </CategoryDiv>
+                <CategoryDiv>
+                  <BaseCheckInput
+                    type="checkbox"
+                    value="electronics"
+                    onChange={handleSelectItem}
+                    checked={recommendItem.includes("electronics")}
+                  />
+                  <CategoryNameLabel>家電</CategoryNameLabel>
+                </CategoryDiv>
+                <CategoryDiv>
+                  <BaseCheckInput
+                    type="checkbox"
+                    value="sports-outdoor"
+                    onChange={handleSelectItem}
+                    checked={recommendItem.includes("sports-outdoor")}
+                  />
+                  <CategoryNameLabel>スポーツ・アウトドア</CategoryNameLabel>
+                </CategoryDiv>
+            </CategoriesDiv>
+            <AccountInfoInputButton type="submit" value="登録してホーム画面へ" />
+          </BaseForm>
+        </FormContainerInnerDiv>
+      </FormContainerDiv>
     </>
   );
 };
 
 
-const FormContainer = styled.div``;
+const FormContainerDiv = styled.div`
+  width: 100%;
+  padding: 120px 0px 30px 0px;
+`;
 
-const PageTitle = styled.h1``;
+const FormContainerInnerDiv = styled.div`
+  width: 100%;
+  padding-top: 20px;
+`;
 
-const InfoLabel = styled.label``;
+const UserNameDiv = styled.div`
+  margin-bottom: 20px;
+`;
 
-const UserNameDiv = styled.div``;
+const SexDiv = styled.div`
+  margin-bottom: 20px;
+  text-align: center;
+`;
 
-const SexDiv = styled.div``;
+const SexLabel = styled.label`
+  margin-bottom: 5px;
+  margin-left: 20px;
+`;
 
-const BirthDayDiv = styled.div``;
+const BirthDayDiv = styled.div`
+  margin-bottom: 20px;
+`;
 
-const CategoryDiv = styled.div``;
+const CategoriesDiv = styled.div`
+  display: table;
+  margin: 0 auto;
+  margin-bottom: 20px;
+`;
 
-const AccountInfoForm = styled.form``;
+const CategoryDiv = styled.div`
+  margin-bottom: 2px;
+`;
 
-const Input = styled.input``;
+const CategoryNameLabel = styled.label`
+  margin-left: 15px;
+`;
 
 
 export default AccountSetUp;

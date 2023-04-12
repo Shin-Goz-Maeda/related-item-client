@@ -4,11 +4,13 @@ import { AuthContext } from "../../../../common/context/AuthContext";
 import { signOut } from "firebase/auth";
 import { auth } from "../../../../common/firebase/firebase";
 import styled from "styled-components";
+import { sp } from "../../../../common/context/ResponsiveMedia";
 import Menu from "../menu/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Drawer from "@mui/material/Drawer";
 import LogoImg from "../../../../../img/Logo.jpeg";
-import { LogOutButton } from "../../atoms/Button";
+import Button from "@mui/material/Button";
+import { BaseLogoImg } from "../../atoms/Logo";
 
 
 function Header() {
@@ -26,61 +28,93 @@ function Header() {
   };
 
   return (
-    <HeaderContainer>
-      <MenuContainer>
+    <HeaderContainerDiv>
+      <MenuContainerDiv>
         <MenuIcon
-          style={{height: 50, width:50 }}
+          style={{
+            height: 50,
+            width: 50
+          }}
           onClick={() => setDrawerOpened(true)}
         />
         <Drawer
           anchor={"left"}
           open={drawerOpened}
-          onClose={() => setDrawerOpened(false)}>
+          onClose={() => setDrawerOpened(false)}
+        >
           <Menu />
         </Drawer>
-      </MenuContainer>
-      <LogoContainer>
-        <Link to="/"><Logo src={LogoImg} /></Link>
-      </LogoContainer>
-      <ButtonContainer>
-        <LogOutButton onClick={handleLogout}>
-          <Link to="login">ログアウト</Link>
-        </LogOutButton>
-      </ButtonContainer>
-    </HeaderContainer>
+      </MenuContainerDiv>
+      <LogoContainerDiv>
+        <Link to="/">
+          <BaseLogoImg src={LogoImg} />
+        </Link>
+      </LogoContainerDiv>
+      <ButtonContainerDiv>
+        <Button
+          variant="outlined"
+          style={{
+            height: 40,
+            width: 100,
+            fontSize: 12,
+            fontWeight: "bold"
+          }}
+          sx={{
+            border: 2,
+            borderColor: "grey.500",
+            "&:hover": {
+              border: "none",
+              backgroundColor: "red",
+              color: "white"
+            }
+          }}
+          onClick={handleLogout}
+        >
+          <Link
+            to="login"
+            style={{
+              textDecoration: "none",
+              color: "#000"
+            }}
+          >ログアウト</Link>
+        </Button>
+      </ButtonContainerDiv>
+    </HeaderContainerDiv>
   );
 };
 
 
-const HeaderContainer = styled.div`
+const HeaderContainerDiv = styled.div`
   display: flex;
-  position: relative;
-  border: 5px solid #000;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100px;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   z-index: 999;
 `;
 
-const MenuContainer = styled.div`
-  display: flex;
-  position: absolute;
-  top: 35%;
-  left: 2%;`
-;
+const MenuContainerDiv = styled.div`
+  padding-left: 30px;
 
-const LogoContainer = styled.div`
-  margin-right: auto;
-  margin-left: auto;
+  ${sp`
+    padding-left: 15px;
+  `}
 `;
 
-const Logo = styled.img`
-  width: 100px;
-  height: 100px;
+const LogoContainerDiv = styled.div`
+  height: 100%;
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-  position: absolute;
-  top: 35%;
-  right: 0%;
+const ButtonContainerDiv = styled.div`
+  padding-right: 30px;
+
+  ${sp`
+    padding-right: 15px;
+  `}
 `;
 
 

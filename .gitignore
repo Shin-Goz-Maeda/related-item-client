@@ -11,6 +11,7 @@
 npm-debug.log*
 .env
 .env.development
+.env.production
 
 # firebase
 .firebase

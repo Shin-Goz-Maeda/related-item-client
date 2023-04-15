@@ -111,7 +111,7 @@ function Item() {
 
 const ItemContainerDiv = styled.div`
   width: 100%;
-  padding: 120px 0px 30px 0px;
+  padding: 100px 0px 30px 0px;
   background-color: #F6F6F6;
 `;
 

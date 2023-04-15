@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { pc, lg } from "../../../common/context/ResponsiveMedia";
+import { tb, pc, lg } from "../../../common/context/ResponsiveMedia";
 import { HOST_DOMAIN } from "../../../common/constant/Constant";
 import Header from "../../components/blocks/header/Header";
 import ItemContainer from "../../components/blocks/mainPageItemContainer/ItemContainer";
@@ -63,24 +63,31 @@ function Main() {
 
 
 const MainContainerDiv = styled.div`
-  padding: 120px 20px 30px 20px;
+  width: 100%;
+  padding: 100px 20px 30px 20px;
   background-color: #F6F6F6;
 `;
 
 const ItemSpaceDiv = styled.div`
+  width: 100%;
   column-gap: 0;
   column-count: 3;
 
   ${lg`
-    column-count: 5;
+    column-count: 7;
   `}
 
   ${pc`
+    column-count: 5;
+  `}
+
+  ${tb`
     column-count: 4;
   `}
 `;
 
 const LoadPageDiv = styled.div`
+  width: 100%;
   text-align: center;
 `;
 

@@ -89,7 +89,7 @@ const HeaderContainerDiv = styled.div`
   position: fixed;
   top: 0;
   width: 100%;
-  height: 100px;
+  height: 80px;
   align-items: center;
   justify-content: space-between;
   background-color: white;

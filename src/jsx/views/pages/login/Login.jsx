@@ -5,7 +5,6 @@ import { AuthContext } from "../../../common/context/AuthContext";
 import { signInWithPopup, getAdditionalUserInfo } from "firebase/auth";
 import { auth, googleProvider } from "../../../common/firebase/firebase";
 import { HOST_DOMAIN } from "../../../common/constant/Constant";
-import Main from "../main/Main";
 import { GoogleAuthButton, LoginButton } from "../../components/atoms/Button";
 import LogoImg from "../../../../img/Logo.jpeg";
 import { BaseForm, BaseFormHeaderDiv, BaseLabel, BaseInput, BaseLineDiv } from "../../components/atoms/Form";

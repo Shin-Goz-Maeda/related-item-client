@@ -9,11 +9,12 @@ import { PwResetButton } from "../../components/atoms/Button";
 import { BaseForm, BaseLabel, PwResetInput, BaseLineDiv } from "../../components/atoms/Form";
 import { PageTitleH1 } from "../../components/atoms/PageTitle";
 import { sp } from "../../../common/context/ResponsiveMedia";
+import { HOST_DOMAIN } from "../../../common/constant/Constant";
 
 
 function PwReset() {
-  const { user, actionSetting } = useContext(AuthContext);
-  const [ setError ] = useState();
+  const { user, actionSetting, catchError, postServer } = useContext(AuthContext);
+  const [ error, setError ] = useState();
   const [ success, setSuccess ] = useState();
   const emailRef = useRef(null);
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ function PwReset() {
         setTimeout(() => {
           navigate("/");
         }, 5000);
-      });
+      })
   };
 
   // ログイン画面のパスワードリセット処理
@@ -38,17 +39,26 @@ function PwReset() {
     event.preventDefault();
     const email = emailRef.current.value;
 
-    // firebaseのパスワード再設定メソッド
-    sendPasswordResetEmail(auth, email, actionSetting("/login"))
-      .then(() => {
-        setSuccess("パスワード再設定メールを送信しました。");
-        setTimeout(() => {
-          navigate("/login");
-        }, 5000);
-      })
-      .catch((err) => {
-        console.log(err.message);
-        setError("メールアドレスを確認してください。");
+    fetch(HOST_DOMAIN + "/mail-check", postServer(email))
+      .then((response) => {
+        response.json()
+        .then((result) => {
+          if (!result[0]) {
+            setError("入力したアドレスは登録されていません。");
+          } else {
+            // firebaseのパスワード再設定メソッド
+            sendPasswordResetEmail(auth, email, actionSetting("/login"))
+            .then(() => {
+              setSuccess("パスワード再設定メールを送信しました。");
+              setTimeout(() => {
+                navigate("/login");
+              }, 5000);
+            })
+            .catch((error) => {
+              setError(catchError(error.message));
+            });
+          };
+        });
       });
   };
 
@@ -64,6 +74,7 @@ function PwReset() {
             </PageInfoP>
             <BaseForm onSubmit={handleChangePasswordLogged}>
               {success && <p style={{ color: "blue", textAlign: "center" }}>{success}</p>}
+              {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
               <PwResetButton>再設定メールを送信</PwResetButton>
             </BaseForm>
           </LoggedPwResetContainerDiv>
@@ -73,11 +84,13 @@ function PwReset() {
             <PageTitleH1>パスワードリセット</PageTitleH1>
             <BaseForm onSubmit={handleChangePassword}>
               {success && <p style={{ color: "blue", textAlign: "center" }}>{success}</p>}
+              {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
               <PwResetFormDiv>
                 <BaseLabel htmlFor="email">メールアドレス</BaseLabel>
                 <PwResetInput
                   type="email"
-                  placeholder="email"
+                  placeholder="xxx@email.com"
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$\S|\S.*?\S"
                   ref={emailRef}
                 />
               </PwResetFormDiv>

@@ -22,7 +22,7 @@ function Header() {
 
   // ログアウト処理
   const handleLogout = () => {
-    userLoggedInState(false, "");
+    userLoggedInState(false, null);
     signOut(auth);
     navigate("/login");
   };

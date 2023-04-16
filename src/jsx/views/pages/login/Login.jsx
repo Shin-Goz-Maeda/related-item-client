@@ -5,6 +5,7 @@ import { AuthContext } from "../../../common/context/AuthContext";
 import { signInWithPopup, getAdditionalUserInfo } from "firebase/auth";
 import { auth, googleProvider } from "../../../common/firebase/firebase";
 import { HOST_DOMAIN } from "../../../common/constant/Constant";
+import Main from "../main/Main";
 import { GoogleAuthButton, LoginButton } from "../../components/atoms/Button";
 import LogoImg from "../../../../img/Logo.jpeg";
 import { BaseForm, BaseFormHeaderDiv, BaseLabel, BaseInput, BaseLineDiv } from "../../components/atoms/Form";
@@ -32,7 +33,9 @@ function Login() {
     .then((response) => response.json())
     .then((result) => {
       // メール認証が完了しているかを判定
-      if (result.error !== "not_mailVerified") {
+      if (result.code === "auth/wrong-password") {
+        setError("認証方法に問題があります。");
+      } else if (result.error !== "not_mailVerified") {
         // メール認証が完了している場
         userLoggedInState(true, result.user);
 
@@ -100,6 +103,7 @@ function Login() {
             <BaseInput
               type="email"
               placeholder="xxx@email.com"
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$\S|\S.*?\S"
               ref={emailRef}
             />
           </EmailDiv>
@@ -107,7 +111,9 @@ function Login() {
             <BaseLabel htmlFor="password">パスワード</BaseLabel>
             <BaseInput
               type="password"
-              placeholder="password"
+              placeholder="Password123"
+              maxlength="20"
+              pattern="^([a-zA-Z0-9]{6,})$\S|\S.*?\S"
               ref={passwordRef}
             />
           </PasswordDiv>

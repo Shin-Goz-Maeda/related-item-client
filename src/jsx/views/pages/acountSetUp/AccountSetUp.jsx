@@ -75,6 +75,7 @@ function AccountSetUp() {
                 type="text"
                 placeholder="username"
                 required="required"
+                pattern="^[0-9a-z]+$\S|\S.*?\S"
                 ref={userNameRef}
               />
             </UserNameDiv>

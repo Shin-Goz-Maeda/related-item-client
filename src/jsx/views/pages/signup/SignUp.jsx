@@ -64,12 +64,23 @@ function SignUp() {
         const uuid = result.user.uid;
         const provider = result.providerId;
 
-        // POST情報を送信
-        fetch(HOST_DOMAIN + "/signup-google", postServer(email, "", uuid, provider));
         userLoggedInState(true, result.user);
 
         // 初回ログインユーザー
         const isNewUser = getAdditionalUserInfo(result)?.isNewUser;
+
+        // POST情報を送信
+        fetch(HOST_DOMAIN + "/signup-google", postServer(email, "", uuid, provider))
+          .then((response) => {
+            response.json()
+            .then((result) => {
+              if(result.user_delete === 1) {
+                navigate("/accountsetup");
+                return;
+              };
+            });
+          });
+
         // 初回ログインユーザーかを判定
         if (isNewUser) {
           navigate("/accountsetup");
@@ -98,6 +109,7 @@ function SignUp() {
             <BaseInput
               type="email"
               placeholder="xxx@email.com"
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$\S|\S.*?\S"
               ref={emailRef}
             />
           </EmailDiv>
@@ -105,7 +117,9 @@ function SignUp() {
             <BaseLabel htmlFor="password">パスワード</BaseLabel>
             <BaseInput
               type="password"
-              placeholder="password"
+              placeholder="Password123"
+              maxlength="20"
+              pattern="^([a-zA-Z0-9]{6,})$\S|\S.*?\S"
               ref={passwordRef}
             />
           </PasswordDiv>

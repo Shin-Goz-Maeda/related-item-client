@@ -14,7 +14,7 @@ function Main() {
    // DBからアイテム情報をすべて取得
    useEffect(() => {
     setLoading(false);
-    fetch(HOST_DOMAIN + "/getImage")
+    fetch(HOST_DOMAIN + "/get-image")
       .then((response) => {
         response.json()
         .then((data) => {
@@ -64,12 +64,11 @@ function Main() {
 
 const MainContainerDiv = styled.div`
   width: 100%;
-  padding: 100px 20px 30px 20px;
+  padding: 100px 0 30px 0;
   background-color: #F6F6F6;
 `;
 
 const ItemSpaceDiv = styled.div`
-  width: 100%;
   column-gap: 0;
   column-count: 3;
 

@@ -7,7 +7,6 @@ import { AuthContext } from "../common/context/AuthContext";
 function PrivateRoute({ children }) {
   // 共通のユーザ情報を取得
   const { user } = useContext(AuthContext);
-
   if (!user) {
     // ユーザー情報が空の場合はログインページへ
     return (<Navigate to="login" />);

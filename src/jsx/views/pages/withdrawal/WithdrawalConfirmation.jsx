@@ -22,7 +22,7 @@ function WithdrawalConfirmation() {
     // POST情報を送信
     fetch(HOST_DOMAIN + "/withdrawal", postServer(email))
       .then(() => {
-        userLoggedInState(false, "");
+        userLoggedInState(false, null);
         signOut(auth);
         navigate("/withdrawalcomplete");
       })

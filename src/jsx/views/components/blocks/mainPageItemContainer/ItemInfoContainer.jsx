@@ -18,7 +18,7 @@ function ItemInfoContainer(props) {
 
 
 const ItemInfoContentDiv = styled.div`
-  width: 90%;
+  width: 85%;
   height: 30%;
   padding: 10px;
   margin: 0 auto;
@@ -26,11 +26,11 @@ const ItemInfoContentDiv = styled.div`
   border-radius: 0 0 10px 10px;
 
   ${tb`
-    padding: 3px;
+    padding: 5px;
   `}
 
   ${sp`
-    padding: 3px;
+    padding: 2px;
   `}
 `;
 

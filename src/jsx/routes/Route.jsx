@@ -56,7 +56,9 @@ function RouterConfig() {
           <Route
             path="accountsetup"
             element={
-              <AccountSetUp />
+              <PrivateRoute>
+                <AccountSetUp />
+              </PrivateRoute>
             }
           />
           <Route

@@ -31,17 +31,21 @@ export default function Slide(props) {
     <>
       <Swiper
         dir="rtl"
-        slidesPerView="auto"
-        slidesPerGroupAuto
         spaceBetween={40}
         navigation={true}
+        loop={true}
+        loopAdditionalSlides={4}
+        modules={[Pagination]}
         pagination={{
           type: "bullets",
           clickable: true
         }}
-        loop={true}
-        loopAdditionalSlides={4}
-        modules={[Pagination]}
+        breakpoints={{
+          375: {slidesPerView: 1},
+          768: {slidesPerView: 2},
+          1280: {slidesPerView: 3},
+          1600: {slidesPerView: 4}
+        }}
       >
         {InstagramPostDisplay()}
       </Swiper>

@@ -69,6 +69,7 @@ const MainContainerDiv = styled.div`
 `;
 
 const ItemSpaceDiv = styled.div`
+  text-align: center;
   column-gap: 0;
   column-count: 3;
 

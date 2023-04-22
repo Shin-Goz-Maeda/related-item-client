@@ -9,6 +9,7 @@ import Login from "../views/pages/login/Login";
 import PwReset from "../views/pages/pwreset/PwReset";
 import SignUp from "../views/pages/signup/SignUp";
 import MailAuth from "../views/pages/mailAuth/MailAuth";
+import AccountInfo from "../views/pages/acountSetUp/AccountInfo";
 import AccountSetUp from "../views/pages/acountSetUp/AccountSetUp";
 import WithdrawalComplete from "../views/pages/withdrawal/WithdrawalComplete";
 import WithdrawalConfirmation from "../views/pages/withdrawal/WithdrawalConfirmation";
@@ -50,6 +51,14 @@ function RouterConfig() {
             element={
               <PrivateRoute>
                 <WithdrawalConfirmation />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="accountinfo"
+            element={
+              <PrivateRoute>
+                <AccountInfo />
               </PrivateRoute>
             }
           />

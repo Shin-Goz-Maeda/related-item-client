@@ -63,7 +63,26 @@ export const PwResetButton = styled.button`
 // アカウント情報登録ボタン
 export const AccountInfoInputButton = styled.input`
   display: block;
-  width: 200px;
+  width: 100px;
+  height: 40px;
+  margin: 0 auto;
+  font-weight: bold;
+  border-radius: 10px;
+  &:hover {
+    background-color: #ff0000;
+    color: #ffffff;
+  };
+
+  ${sp`
+    width: 150px;
+    height: 35px;
+  `}
+`;
+
+// アカウント情報登録ボタン
+export const AccountInfoButton = styled.button`
+  display: block;
+  width: 100px;
   height: 40px;
   margin: 0 auto;
   font-weight: bold;

@@ -35,7 +35,7 @@ export const BaseInput = styled.input`
   height: 10px;
   padding: 10px;
   margin: 0 auto;
-  font-size: 15px;
+  font-size: 14px;
   border-radius: 13px;
 
   ${sp`

@@ -1,8 +1,8 @@
 // メニュー情報
 const MenuData = [
   {
-    title: "アカウント設定",
-    link: "/accountsetup"
+    title: "アカウント情報",
+    link: "/accountinfo"
   },
   {
     title: "パスワードリセット",

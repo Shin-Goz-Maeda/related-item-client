@@ -16,7 +16,6 @@ function AccountSetUp() {
   const [ selectedSex, setSelectedSex ] = useState("");
   const [ birthDate, setBirthDate ] = useState("");
   const [ recommendItem, setRecommendItem ] = useState("");
-  const [ selectedRecommendItem, setSelectedRecommendItem ] = useState("");
   const [ loading, setLoading ] = useState(false);
   const userNameRef = useRef(null);
   const birthDayRef = useRef(null);
@@ -30,10 +29,8 @@ function AccountSetUp() {
   const handleSelectItem = (e) => {
     if (recommendItem.includes(e.target.value)) {
       setRecommendItem(recommendItem.filter(item => item !== e.target.value));
-      setSelectedRecommendItem(recommendItem.filter(item => item !== e.target.value));
     } else {
       setRecommendItem([...recommendItem, e.target.value]);
-      setSelectedRecommendItem([...recommendItem, e.target.value]);
     };
   };
 
@@ -43,6 +40,7 @@ function AccountSetUp() {
     const birthDay = birthDayRef.current.value;
     // DBでは、レコメンドジャンルを配列で保存するために変換
     const recommendItemJson = JSON.stringify(recommendItem);
+    console.log("AccountSetUp", recommendItemJson);
 
     // POST情報を設定
     const postAccountInfoParameter = {
@@ -79,7 +77,7 @@ function AccountSetUp() {
             setUserName(result[0].user_name);
             setSelectedSex(result[0].sex);
             setBirthDate(result[0].birth_date);
-            setSelectedRecommendItem(result[0].want_to_item);
+            setRecommendItem(result[0].want_to_item);
           };
           setLoading(true);
         });
@@ -87,8 +85,8 @@ function AccountSetUp() {
   }, []);
 
   const recommendItemCategory = (itemCategory) => {
-    const itemLength = selectedRecommendItem.length;
-    const recommendItemData = selectedRecommendItem;
+    const itemLength = recommendItem.length;
+    const recommendItemData = recommendItem;
     for (let i = 0; itemLength >= i; i++) {
       if(recommendItemData[i] === itemCategory) {
         return true;
@@ -124,7 +122,7 @@ function AccountSetUp() {
                     type="radio"
                     value="male"
                     required="required"
-                    checked={selectedSex === "male"}
+                    defaultChecked={selectedSex === "male"}
                     onClick={onChangeSexValue}
                   />
                   <SexLabel>女</SexLabel>
@@ -133,7 +131,7 @@ function AccountSetUp() {
                     type="radio"
                     value="female"
                     required="required"
-                    checked={selectedSex === "female"}
+                    defaultChecked={selectedSex === "female"}
                     onClick={onChangeSexValue}
                   />
                 </SexDiv>
@@ -155,7 +153,7 @@ function AccountSetUp() {
                       type="checkbox"
                       value="fashion"
                       onClick={handleSelectItem}
-                      checked={selectedRecommendItem ? recommendItemCategory("fashion") : recommendItem.includes("fashion")}
+                      defaultChecked={recommendItem ? recommendItemCategory("fashion") : recommendItem.includes("fashion")}
                     />
                     <CategoryNameLabel>ファッション</CategoryNameLabel>
                   </CategoryDiv>
@@ -164,7 +162,7 @@ function AccountSetUp() {
                       type="checkbox"
                       value="food-drink"
                       onClick={handleSelectItem}
-                      checked={selectedRecommendItem ? recommendItemCategory("food-drink") : recommendItem.includes("food-drink")}
+                      defaultChecked={recommendItem ? recommendItemCategory("food-drink") : recommendItem.includes("food-drink")}
                     />
                     <CategoryNameLabel>グルメ・飲料</CategoryNameLabel>
                   </CategoryDiv>
@@ -173,7 +171,7 @@ function AccountSetUp() {
                       type="checkbox"
                       value="dailyNecessities-healthCare"
                       onClick={handleSelectItem}
-                      checked={selectedRecommendItem ? recommendItemCategory("dailyNecessities-healthCare") : recommendItem.includes("dailyNecessities-healthCare")}
+                      defaultChecked={recommendItem ? recommendItemCategory("dailyNecessities-healthCare") : recommendItem.includes("dailyNecessities-healthCare")}
                     />
                     <CategoryNameLabel>日用品・ヘルスケア</CategoryNameLabel>
                   </CategoryDiv>
@@ -182,7 +180,7 @@ function AccountSetUp() {
                       type="checkbox"
                       value="cosmetics-hairCare"
                       onClick={handleSelectItem}
-                      checked={selectedRecommendItem ? recommendItemCategory("cosmetics-hairCare") : recommendItem.includes("cosmetics-hairCare")}
+                      defaultChecked={recommendItem ? recommendItemCategory("cosmetics-hairCare") : recommendItem.includes("cosmetics-hairCare")}
                     />
                     <CategoryNameLabel>コスメ・ヘアケア</CategoryNameLabel>
                   </CategoryDiv>
@@ -191,7 +189,7 @@ function AccountSetUp() {
                       type="checkbox"
                       value="baby-kids"
                       onClick={handleSelectItem}
-                      checked={selectedRecommendItem ? recommendItemCategory("baby-kids") : recommendItem.includes("baby-kids")}
+                      defaultChecked={recommendItem ? recommendItemCategory("baby-kids") : recommendItem.includes("baby-kids")}
                     />
                     <CategoryNameLabel>ベビー・キッズ</CategoryNameLabel>
                   </CategoryDiv>
@@ -200,7 +198,7 @@ function AccountSetUp() {
                       type="checkbox"
                       value="electronics"
                       onClick={handleSelectItem}
-                      checked={selectedRecommendItem ? recommendItemCategory("electronics") : recommendItem.includes("electronics")}
+                      defaultChecked={recommendItem ? recommendItemCategory("electronics") : recommendItem.includes("electronics")}
                     />
                     <CategoryNameLabel>家電</CategoryNameLabel>
                   </CategoryDiv>
@@ -209,7 +207,7 @@ function AccountSetUp() {
                       type="checkbox"
                       value="sports-outdoor"
                       onClick={handleSelectItem}
-                      checked={selectedRecommendItem ? recommendItemCategory("sports-outdoor") : recommendItem.includes("sports-outdoor")}
+                      defaultChecked={recommendItem ? recommendItemCategory("sports-outdoor") : recommendItem.includes("sports-outdoor")}
                     />
                     <CategoryNameLabel>スポーツ・アウトドア</CategoryNameLabel>
                   </CategoryDiv>

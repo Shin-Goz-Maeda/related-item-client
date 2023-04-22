@@ -40,7 +40,6 @@ function AccountSetUp() {
     const birthDay = birthDayRef.current.value;
     // DBでは、レコメンドジャンルを配列で保存するために変換
     const recommendItemJson = JSON.stringify(recommendItem);
-    console.log("AccountSetUp", recommendItemJson);
 
     // POST情報を設定
     const postAccountInfoParameter = {

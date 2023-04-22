@@ -19,8 +19,6 @@ function AccountInfo() {
   const [ loading, setLoading ] = useState(false);
   const email = user.email;
 
-  console.log("AccountInfo", selectedRecommendItem);
-
   useEffect(()=> {
     setLoading(false);
     // DBから登録済のアカウント情報を取得
@@ -28,7 +26,6 @@ function AccountInfo() {
       .then((response) => {
         response.json()
         .then((result) => {
-          console.log("AccountInfo", result)
           setUserName(result[0].user_name);
           setSelectedSex(result[0].sex);
           setBirthDate(result[0].birth_date);

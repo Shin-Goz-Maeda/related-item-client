@@ -40,6 +40,7 @@ export const BaseInput = styled.input`
 
   ${sp`
     width: 50%;
+    font-size: 11px;
   `}
 `;
 

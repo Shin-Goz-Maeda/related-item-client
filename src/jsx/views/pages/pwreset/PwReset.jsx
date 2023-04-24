@@ -1,4 +1,4 @@
-import { useState, useRef, useContext } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext } from "../../../common/context/AuthContext";
@@ -16,6 +16,8 @@ function PwReset() {
   const { user, actionSetting, catchError, postServer } = useContext(AuthContext);
   const [ error, setError ] = useState();
   const [ success, setSuccess ] = useState();
+  const [ loading, setLoading ] = useState(false);
+  const [ provider ,setProvider ] = useState("");
   const emailRef = useRef(null);
   const navigate = useNavigate();
 
@@ -62,10 +64,20 @@ function PwReset() {
       });
   };
 
-  // ログイン状態を判定して画面表示を切り替え
-  return (
-    <>
-      {user ?
+  const whatProvider = () => {
+    if (provider === "google.com") {
+      return (
+        <>
+          <Header />
+          <LoggedPwResetContainerDiv>
+            <PageTitleH1>パスワードリセット</PageTitleH1>
+            <PageInfoP>ご登録のログイン方法では、<br/>パスワードリセットはできません。
+            </PageInfoP>
+          </LoggedPwResetContainerDiv>
+        </>
+      );
+    } else {
+      return (
         <>
           <Header />
           <LoggedPwResetContainerDiv>
@@ -73,42 +85,72 @@ function PwReset() {
             <PageInfoP>パスワードのリセットは下記ボタンをクリック後、<br/>ご登録のメールへ再設定メールが送信されます。
             </PageInfoP>
             <BaseForm onSubmit={handleChangePasswordLogged}>
-              {success && <p style={{ color: "blue", textAlign: "center" }}>{success}</p>}
-              {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
+              {success && <p style={{ color: "blue", textAlign: "center", marginBottom: 3 }}>{success}</p>}
+              {error && <p style={{ color: "red", textAlign: "center", marginBottom: 3 }}>{error}</p>}
               <PwResetButton>再設定メールを送信</PwResetButton>
             </BaseForm>
           </LoggedPwResetContainerDiv>
+        </>
+      );
+    };
+  };
+
+  useEffect(() => {
+    setLoading(false);
+    if (user) {
+      const email = user.email;
+      // DBからアカウントのログイン方法を取得
+      fetch(HOST_DOMAIN + "/login-provider", postServer(email))
+        .then((response) => {
+          response.json()
+          .then((result) => {
+            setProvider(result[0].provider);
+          });
+        })
+    };
+    setLoading(true);
+  }, [postServer, user]);
+
+  // ログイン状態を判定して画面表示を切り替え
+  return (
+    <>
+      {loading ?
+        <>
+          {user ?
+            whatProvider() :
+            <PwResetContainerDiv>
+              <PwResetContainerInnerDiv>
+                <PageTitleH1>パスワードリセット</PageTitleH1>
+                <BaseForm onSubmit={handleChangePassword}>
+                  {success && <p style={{ color: "blue", textAlign: "center", marginBottom: 3 }}>{success}</p>}
+                  {error && <p style={{ color: "red", textAlign: "center", marginBottom: 3 }}>{error}</p>}
+                  <PwResetFormDiv>
+                    <BaseLabel htmlFor="email">メールアドレス</BaseLabel>
+                    <PwResetInput
+                      type="email"
+                      placeholder="xxx@email.com"
+                      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$\S|\S.*?\S"
+                      ref={emailRef}
+                    />
+                  </PwResetFormDiv>
+                  <PwResetButton>再設定メールを送信</PwResetButton>
+                </BaseForm>
+                <BaseLineDiv>または</BaseLineDiv>
+                <LoginDiv>
+                  <Link
+                    to="/login"
+                    style={{
+                      color: "#333333",
+                      fontWeight: "bold"
+                    }}
+                  >ログインはこちら
+                  </Link>
+                </LoginDiv>
+              </PwResetContainerInnerDiv>
+            </PwResetContainerDiv>
+          }
         </> :
-        <PwResetContainerDiv>
-          <PwResetContainerInnerDiv>
-            <PageTitleH1>パスワードリセット</PageTitleH1>
-            <BaseForm onSubmit={handleChangePassword}>
-              {success && <p style={{ color: "blue", textAlign: "center" }}>{success}</p>}
-              {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
-              <PwResetFormDiv>
-                <BaseLabel htmlFor="email">メールアドレス</BaseLabel>
-                <PwResetInput
-                  type="email"
-                  placeholder="xxx@email.com"
-                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$\S|\S.*?\S"
-                  ref={emailRef}
-                />
-              </PwResetFormDiv>
-              <PwResetButton>再設定メールを送信</PwResetButton>
-            </BaseForm>
-            <BaseLineDiv>または</BaseLineDiv>
-            <LoginDiv>
-              <Link
-                to="/login"
-                style={{
-                  color: "#333333",
-                  fontWeight: "bold"
-                }}
-              >ログインはこちら
-              </Link>
-            </LoginDiv>
-          </PwResetContainerInnerDiv>
-        </PwResetContainerDiv>
+        <LoadPageDiv>ロード中</LoadPageDiv>
       }
     </>
   );
@@ -153,6 +195,12 @@ const PageInfoP = styled.p`
   ${sp`
     padding: 0 50px;
   `}
+`;
+
+// 共通
+const LoadPageDiv = styled.div`
+  width: 100%;
+  text-align: center;
 `;
 
 export default PwReset;

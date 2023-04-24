@@ -34,6 +34,8 @@ function Login() {
       // メール認証が完了しているかを判定
       if (result.code === "auth/wrong-password") {
         setError("認証方法に問題があります。");
+      } else if (result.code === "auth/user-not-found") {
+        setError("アカウント登録を行なってください。");
       } else if (result.error !== "not_mailVerified") {
         // メール認証が完了している場
         userLoggedInState(true, result.user);

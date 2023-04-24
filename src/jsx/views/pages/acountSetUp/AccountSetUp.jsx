@@ -17,6 +17,7 @@ function AccountSetUp() {
   const [ birthDate, setBirthDate ] = useState("");
   const [ recommendItem, setRecommendItem ] = useState("");
   const [ loading, setLoading ] = useState(false);
+  const [ error, setError ] = useState();
   const userNameRef = useRef(null);
   const birthDayRef = useRef(null);
   const email = user.email;
@@ -61,6 +62,8 @@ function AccountSetUp() {
       .then((result) => {
         if (result.status === 200) {
           navigate("/");
+        } else if (result.status === 401) {
+          setError("誕生日が正しくありません");
         };
       });
   };
@@ -136,11 +139,12 @@ function AccountSetUp() {
                 </SexDiv>
                 <BirthDayDiv>
                   <AccountSetUpLabel htmlFor="birthDay">誕生日</AccountSetUpLabel>
+                  {error && <p style={{ color: "red", textAlign: "center", marginBottom: 3 }}>{error}</p>}
                   <AccountSetUpInput
                     type="date-local"
                     placeholder="1999年04月10日→19990410"
                     required="required"
-                    pattern="^[0-9]+$"
+                    pattern="^[0-9]{8}"
                     defaultValue={birthDate ? birthDate : ""}
                     ref={birthDayRef}
                   />

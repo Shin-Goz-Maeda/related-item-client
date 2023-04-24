@@ -26,10 +26,12 @@ function AccountInfo() {
       .then((response) => {
         response.json()
         .then((result) => {
-          setUserName(result[0].user_name);
-          setSelectedSex(result[0].sex);
-          setBirthDate(result[0].birth_date);
-          setSelectedRecommendItem(result[0].want_to_item);
+          if (result.length > 0 && result[0].user_name !== null) {
+            setUserName(result[0].user_name);
+            setSelectedSex(result[0].sex);
+            setBirthDate(result[0].birth_date);
+            setSelectedRecommendItem(result[0].want_to_item);
+          };
           setLoading(true);
         });
       });
@@ -59,7 +61,7 @@ function AccountInfo() {
                   <AccountSetUpInput
                     type="text"
                     placeholder="username"
-                    defaultValue={userName}
+                    defaultValue={userName ? userName : ""}
                     disabled
                   />
                 </UserNameDiv>
@@ -87,6 +89,7 @@ function AccountInfo() {
                   <AccountSetUpLabel htmlFor="birthDay">誕生日</AccountSetUpLabel>
                   <AccountSetUpInput
                     type="date-local"
+                    placeholder="1999年04月10日→19990410"
                     defaultValue={birthDate ? birthDate : ""}
                     disabled
                   />
@@ -97,7 +100,7 @@ function AccountInfo() {
                       <BaseCheckInput
                         type="checkbox"
                         value="fashion"
-                        defaultChecked={recommendItemCategory("fashion")}
+                        defaultChecked={selectedRecommendItem ? recommendItemCategory("fashion") : ""}
                         disabled
                       />
                       <CategoryNameLabel>ファッション</CategoryNameLabel>
@@ -106,7 +109,7 @@ function AccountInfo() {
                       <BaseCheckInput
                         type="checkbox"
                         value="food-drink"
-                        defaultChecked={recommendItemCategory("food-drink")}
+                        defaultChecked={selectedRecommendItem ? recommendItemCategory("food-drink") : ""}
                         disabled
                       />
                       <CategoryNameLabel>グルメ・飲料</CategoryNameLabel>
@@ -115,7 +118,7 @@ function AccountInfo() {
                       <BaseCheckInput
                         type="checkbox"
                         value="dailyNecessities-healthCare"
-                        defaultChecked={recommendItemCategory("dailyNecessities-healthCare")}
+                        defaultChecked={selectedRecommendItem ? recommendItemCategory("dailyNecessities-healthCare") : ""}
                         disabled
                       />
                       <CategoryNameLabel>日用品・ヘルスケア</CategoryNameLabel>
@@ -124,7 +127,7 @@ function AccountInfo() {
                       <BaseCheckInput
                         type="checkbox"
                         value="cosmetics-hairCare"
-                        defaultChecked={recommendItemCategory("cosmetics-hairCare")}
+                        defaultChecked={selectedRecommendItem ? recommendItemCategory("cosmetics-hairCare") : ""}
                         disabled
                       />
                       <CategoryNameLabel>コスメ・ヘアケア</CategoryNameLabel>
@@ -133,7 +136,7 @@ function AccountInfo() {
                       <BaseCheckInput
                         type="checkbox"
                         value="baby-kids"
-                        defaultChecked={recommendItemCategory("baby-kids")}
+                        defaultChecked={selectedRecommendItem ? recommendItemCategory("baby-kids") : ""}
                         disabled
                       />
                       <CategoryNameLabel>ベビー・キッズ</CategoryNameLabel>
@@ -142,7 +145,7 @@ function AccountInfo() {
                       <BaseCheckInput
                         type="checkbox"
                         value="electronics"
-                        defaultChecked={recommendItemCategory("electronics")}
+                        defaultChecked={selectedRecommendItem ? recommendItemCategory("electronics") : ""}
                         disabled
                       />
                       <CategoryNameLabel>家電</CategoryNameLabel>
@@ -151,7 +154,7 @@ function AccountInfo() {
                       <BaseCheckInput
                         type="checkbox"
                         value="sports-outdoor"
-                        defaultChecked={recommendItemCategory("sports-outdoor")}
+                        defaultChecked={selectedRecommendItem ? recommendItemCategory("sports-outdoor") : ""}
                         disabled
                       />
                       <CategoryNameLabel>スポーツ・アウトドア</CategoryNameLabel>

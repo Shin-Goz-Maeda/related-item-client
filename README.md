@@ -25,7 +25,7 @@ amazon で販売されている商品に関連するインスタ投稿を表示�
 
 - MaterialUI
 - Firebase
-- SyledComponents
+- StyledComponents
 
 ### Used NPX Packages
 
